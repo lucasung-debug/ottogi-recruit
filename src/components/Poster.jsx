@@ -42,9 +42,9 @@ function PosterHeader({ title, logoUrl }) {
   const main = lines.slice(1).join(" ") || "";
 
   return (
-    <div style={{ width: POSTER_W }}>
+    <div style={{ width: POSTER_W, background: C.white, padding: "0 20px", boxSizing: "border-box" }}>
       {/* 배너 이미지 + 텍스트 오버레이 */}
-      <div style={{ position: "relative", width: POSTER_W }}>
+      <div style={{ position: "relative" }}>
         <img
           src={`${import.meta.env.BASE_URL}images/banner.png`}
           alt="배너"
@@ -58,7 +58,7 @@ function PosterHeader({ title, logoUrl }) {
           crossOrigin="anonymous"
         />
 
-        {/* 텍스트 오버레이 — 흰색 리본 영역 기준 중앙 정렬 */}
+        {/* 텍스트 오버레이 — 배너 리본 위치 기준 약간 위 정렬 */}
         <div
           style={{
             position: "absolute",
@@ -68,6 +68,7 @@ function PosterHeader({ title, logoUrl }) {
             alignItems: "center",
             justifyContent: "center",
             gap: 6,
+            transform: "translateY(-8px)",
           }}
         >
           {top && (
@@ -197,7 +198,6 @@ function PosterTable({ jobs }) {
                   width: 110,
                   flexShrink: 0,
                   borderRight: `1px solid ${C.border}`,
-                  textAlign: "center",
                 }}
               >
                 <div

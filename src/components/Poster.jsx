@@ -28,7 +28,7 @@ function PosterHeader({ title, logoUrl }) {
   const top = lines[0] || "";
   const main = lines.slice(1).join(" ") || "";
 
-  const BANNER_H = 200;
+  const BANNER_H = 400;
 
   return (
     <div style={{ width: POSTER_W }}>
@@ -41,7 +41,7 @@ function PosterHeader({ title, logoUrl }) {
             width: "100%",
             height: BANNER_H,
             objectFit: "cover",
-            display: "block",
+            display: "contain",
           }}
           crossOrigin="anonymous"
         />

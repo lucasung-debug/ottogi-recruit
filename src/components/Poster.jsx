@@ -33,18 +33,18 @@ function PosterHeader({ title, logoUrl }) {
 
   return (
     <div style={{ width: POSTER_W }}>
-      {/* 배너: overflow:hidden + 이미지 좌측 오프셋으로 banner.png 내 오뚜기 원형 로고 숨김 */}
-      <div style={{ position: "relative", width: POSTER_W, height: BANNER_H, overflow: "hidden" }}>
+      {/* 배너: 좌측 그라디언트 마스크로 오뚜기 원형 로고 자연스럽게 숨김 */}
+      <div style={{ position: "relative", width: POSTER_W, height: BANNER_H }}>
         <img
           src={`${import.meta.env.BASE_URL}images/banner.png`}
           alt="배너"
           style={{
-            position: "absolute",
-            left: -90,
-            width: POSTER_W + 90,
+            width: "100%",
             height: BANNER_H,
             objectFit: "cover",
             display: "block",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0px, black 90px)",
+            maskImage: "linear-gradient(to right, transparent 0px, black 90px)",
           }}
           crossOrigin="anonymous"
         />

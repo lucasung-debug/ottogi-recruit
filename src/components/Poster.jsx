@@ -2,8 +2,6 @@ import React, { forwardRef } from "react";
 import { POSTER_W, C, FONT } from "../utils/constants";
 import { formatSchedule } from "../utils/helpers";
 
-const BANNER_URL = `${import.meta.env.BASE_URL}images/banner.png`;
-
 /* ===== 섹션 헤더 공통 컴포넌트 ===== */
 function SectionHeader({ children }) {
   return (
@@ -85,7 +83,7 @@ function PosterHeader({ title, logoUrl }) {
       {/* 배너 이미지 + 제목 오버레이 */}
       <div style={{ position: "relative", width: POSTER_W }}>
         <img
-          src={BANNER_URL}
+          src={`${import.meta.env.BASE_URL}images/banner.png`}
           alt="배너"
           style={{
             width: "100%",

@@ -37,8 +37,10 @@ function PosterHeader({ title, logoUrl }) {
           alt="배너"
           style={{
             width: "100%",
-            height: "auto",
+            height: "160px",
             display: "block",
+            objectFit: "cover",
+            objectPosition: "center",
           }}
           crossOrigin="anonymous"
         />
@@ -110,73 +112,108 @@ function PosterHeader({ title, logoUrl }) {
   );
 }
 
-/* ===== 모집부문 테이블 ===== */
+/* ===== 모집부문 카드형 ===== */
 function PosterTable({ jobs }) {
   if (!jobs.length) return null;
-  const hs = {
-    background: C.yellow,
-    color: C.darkBlue,
-    fontWeight: 700,
-    fontFamily: FONT,
-    fontSize: 13,
-    padding: "10px 8px",
-    textAlign: "center",
-    borderRight: `1px solid ${C.white}`,
-  };
-  const cs = {
+  const cellStyle = {
     padding: "10px 12px",
     fontSize: 12,
     fontWeight: 200,
     fontFamily: FONT,
     lineHeight: 1.7,
-    borderBottom: `1px solid ${C.border}`,
-    borderRight: `1px solid ${C.border}`,
     verticalAlign: "top",
-    color: C.text,
+    color: "#111111",
     wordBreak: "keep-all",
   };
 
   return (
     <div style={{ padding: "20px 20px 10px" }}>
       <SectionHeader>모집부문</SectionHeader>
-      <table
-        style={{
-          width: "100%",
-          borderCollapse: "collapse",
-          border: `1px solid ${C.border}`,
-        }}
-      >
-        <thead>
-          <tr>
-            <th style={{ ...hs, width: 80 }}>직무</th>
-            <th style={{ ...hs, width: 300 }}>담당업무 및 비전</th>
-            <th style={{ ...hs, width: 120 }}>우대전공</th>
-            <th style={{ ...hs, width: 300, borderRight: "none" }}>자격요건</th>
-          </tr>
-        </thead>
-        <tbody>
-          {jobs.map((j, i) => (
-            <tr key={i} style={{ background: i % 2 === 0 ? C.white : C.gray }}>
-              <td
+      <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+        {jobs.map((j, i) => (
+          <div
+            key={i}
+            style={{
+              borderRadius: 8,
+              overflow: "hidden",
+              border: `1px solid ${C.border}`,
+            }}
+          >
+            {/* 직무명 헤더 */}
+            <div
+              style={{
+                background: C.yellow,
+                color: C.darkBlue,
+                fontWeight: 700,
+                fontFamily: FONT,
+                fontSize: 14,
+                padding: "8px 16px",
+                letterSpacing: 0.5,
+              }}
+            >
+              {j.jobName}
+            </div>
+            {/* 컨텐츠 행 */}
+            <div style={{ display: "flex" }}>
+              {/* 담당업무 및 비전 */}
+              <div
                 style={{
-                  ...cs,
-                  textAlign: "center",
-                  fontWeight: 700,
-                  fontSize: 13,
-                  color: C.darkBlue,
+                  ...cellStyle,
+                  flex: 1,
+                  borderRight: `1px solid ${C.border}`,
                 }}
               >
-                {j.jobName}
-              </td>
-              <td style={{ ...cs, color: "#111111" }}>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontFamily: FONT,
+                    color: C.darkBlue,
+                    fontSize: 11,
+                    marginBottom: 4,
+                  }}
+                >
+                  담당업무 및 비전
+                </div>
                 {j.tasks.map((t, k) => (
                   <div key={k} style={{ textIndent: "-1em", paddingLeft: "1em" }}>{t}</div>
                 ))}
-              </td>
-              <td style={{ ...cs, textAlign: "center", fontSize: 12, color: "#111111" }}>
+              </div>
+              {/* 우대전공 */}
+              <div
+                style={{
+                  ...cellStyle,
+                  width: 110,
+                  flexShrink: 0,
+                  borderRight: `1px solid ${C.border}`,
+                  textAlign: "center",
+                }}
+              >
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontFamily: FONT,
+                    color: C.darkBlue,
+                    fontSize: 11,
+                    marginBottom: 4,
+                  }}
+                >
+                  우대전공
+                </div>
                 {j.major || "전공무관"}
-              </td>
-              <td style={{ ...cs, borderRight: "none", color: "#111111" }}>
+              </div>
+              {/* 자격요건 */}
+              <div style={{ ...cellStyle, flex: 1 }}>
+                <div
+                  style={{
+                    fontWeight: 700,
+                    fontFamily: FONT,
+                    color: C.darkBlue,
+                    fontSize: 11,
+                    marginBottom: 4,
+                  }}
+                >
+                  자격요건
+                </div>
                 {j.required.length > 0 && (
                   <div>
                     <div
@@ -185,6 +222,7 @@ function PosterTable({ jobs }) {
                         fontFamily: FONT,
                         color: C.darkBlue,
                         marginBottom: 3,
+                        fontSize: 11,
                       }}
                     >
                       [ 필수사항 ]
@@ -202,6 +240,7 @@ function PosterTable({ jobs }) {
                         fontFamily: FONT,
                         color: C.darkBlue,
                         marginBottom: 3,
+                        fontSize: 11,
                       }}
                     >
                       [ 우대사항 ]
@@ -211,11 +250,11 @@ function PosterTable({ jobs }) {
                     ))}
                   </div>
                 )}
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -293,6 +332,7 @@ function AppPeriod({ schedule, year }) {
 /* ===== 채용 프로세스 ===== */
 function ProcessChart({ steps }) {
   if (!steps.length) return null;
+  const ARROW = 14; // chevron 화살표 돌출 크기(px)
   return (
     <div style={{ padding: "20px 20px 10px" }}>
       <SectionHeader>채용 프로세스</SectionHeader>
@@ -302,75 +342,78 @@ function ProcessChart({ steps }) {
           alignItems: "flex-start",
           justifyContent: "center",
           flexWrap: "wrap",
-          rowGap: 20,
+          rowGap: 16,
           padding: "16px 0",
         }}
       >
         {steps.map((s, i) => {
+          const isFirst = i === 0;
           const isLast = i === steps.length - 1;
+          const bg = isLast ? C.yellow : C.darkBlue;
+          const textColor = isLast ? C.darkBlue : C.white;
+          // clip-path으로 chevron 도형
+          let clipPath;
+          if (steps.length === 1) {
+            clipPath = "none";
+          } else if (isFirst) {
+            // 왼쪽 평평, 오른쪽 화살표
+            clipPath = `polygon(0 0, calc(100% - ${ARROW}px) 0, 100% 50%, calc(100% - ${ARROW}px) 100%, 0 100%)`;
+          } else if (isLast) {
+            // 왼쪽 화살표 indent, 오른쪽 평평
+            clipPath = `polygon(0 0, 100% 0, 100% 100%, 0 100%, ${ARROW}px 50%)`;
+          } else {
+            // 중간: 왼쪽 indent + 오른쪽 화살표
+            clipPath = `polygon(0 0, calc(100% - ${ARROW}px) 0, 100% 50%, calc(100% - ${ARROW}px) 100%, 0 100%, ${ARROW}px 50%)`;
+          }
+          // 첫 스텝을 제외한 나머지는 왼쪽으로 당겨서 겹치도록
+          const marginLeft = isFirst ? 0 : -ARROW;
           return (
-            <div key={i} style={{ display: "flex", alignItems: "center" }}>
-              {/* 스텝 노드 */}
-              <div
+            <div
+              key={i}
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: 4,
+                marginLeft,
+                zIndex: steps.length - i,
+              }}
+            >
+              {/* STEP 번호 레이블 */}
+              <span
                 style={{
-                  display: "flex",
-                  flexDirection: "column",
-                  alignItems: "center",
-                  gap: 5,
+                  fontSize: 10,
+                  fontWeight: 700,
+                  fontFamily: FONT,
+                  color: C.darkBlue,
+                  letterSpacing: 0.5,
                 }}
               >
-                {/* STEP 번호 레이블 */}
-                <span
-                  style={{
-                    fontSize: 10,
-                    fontWeight: 700,
-                    fontFamily: FONT,
-                    color: C.darkBlue,
-                    letterSpacing: 0.5,
-                  }}
-                >
-                  STEP {i + 1}
-                </span>
-                {/* 원형 노드 */}
-                <div
-                  style={{
-                    width: 80,
-                    height: 80,
-                    borderRadius: "50%",
-                    border: `2px solid ${isLast ? C.yellow : "#AAAAAA"}`,
-                    background: isLast ? C.yellow : C.white,
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    fontSize: 12,
-                    fontWeight: 700,
-                    fontFamily: FONT,
-                    color: C.darkBlue,
-                    textAlign: "center",
-                    lineHeight: 1.4,
-                    padding: "0 8px",
-                    boxSizing: "border-box",
-                    wordBreak: "keep-all",
-                  }}
-                >
-                  {s}
-                </div>
+                STEP {i + 1}
+              </span>
+              {/* Chevron 도형 */}
+              <div
+                style={{
+                  width: 120,
+                  height: 52,
+                  background: bg,
+                  clipPath,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  fontSize: 12,
+                  fontWeight: 700,
+                  fontFamily: FONT,
+                  color: textColor,
+                  textAlign: "center",
+                  lineHeight: 1.3,
+                  padding: isFirst ? `0 ${ARROW + 8}px 0 8px` : `0 ${ARROW + 8}px 0 ${ARROW + 8}px`,
+                  boxSizing: "border-box",
+                  wordBreak: "keep-all",
+                }}
+              >
+                {s}
               </div>
-              {/* 화살표 */}
-              {i < steps.length - 1 && (
-                <div
-                  style={{
-                    color: C.yellow,
-                    fontSize: 20,
-                    fontWeight: 900,
-                    margin: "0 4px",
-                    marginTop: 20,
-                    WebkitTextStroke: `1px ${C.darkBlue}`,
-                  }}
-                >
-                  ▶
-                </div>
-              )}
             </div>
           );
         })}
@@ -402,7 +445,7 @@ function AdditionalInfo({ finalHireMonth }) {
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <span>•</span>
-          <span>인/적성 및 사무능력검사: 온라인 실시</span>
+          <span>인성/업무적응도 검사</span>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <span>•</span>

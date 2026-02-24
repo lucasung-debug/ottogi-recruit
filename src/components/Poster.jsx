@@ -82,7 +82,7 @@ function PosterHeader({ title, logoUrl }) {
                 fontWeight: 700,
                 fontFamily: FONT,
                 letterSpacing: 1,
-                boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
+                boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
               }}
             >
               {top}

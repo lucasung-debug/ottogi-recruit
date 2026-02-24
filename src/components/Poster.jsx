@@ -30,13 +30,15 @@ function PosterHeader({ title, logoUrl }) {
 
   return (
     <div style={{ width: POSTER_W }}>
-      {/* 배너 이미지 + 로고 + 제목 통합 오버레이 */}
-      <div style={{ position: "relative", width: POSTER_W }}>
+      {/* 배너: overflow:hidden + 이미지 좌측 오프셋으로 banner.png 내 오뚜기 원형 로고 숨김 */}
+      <div style={{ position: "relative", width: POSTER_W, height: 220, overflow: "hidden" }}>
         <img
           src={`${import.meta.env.BASE_URL}images/banner.png`}
           alt="배너"
           style={{
-            width: "100%",
+            position: "absolute",
+            left: -90,
+            width: POSTER_W + 90,
             height: 220,
             objectFit: "cover",
             display: "block",

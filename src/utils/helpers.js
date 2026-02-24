@@ -31,7 +31,8 @@ export function calcFinalHireMonth(schedule, year) {
   try {
     const end = schedule.split("~")[1].trim().split("/");
     const dt = new Date(year, parseInt(end[0]) - 1, parseInt(end[1]));
-    dt.setDate(dt.getDate() + 42);
+    dt.setMonth(dt.getMonth() + 1);
+    dt.setDate(dt.getDate() + 14);
     return `${dt.getMonth() + 1}월 중 예정`;
   } catch {
     return "";

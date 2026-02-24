@@ -68,21 +68,19 @@ function PosterHeader({ title, logoUrl }) {
             alignItems: "center",
             justifyContent: "center",
             gap: 6,
-            transform: "translateY(-8px)",
+            transform: "translateY(-7px)",
           }}
         >
           {top && (
             <div
               style={{
-                background: "rgba(255,255,255,0.93)",
                 color: C.darkBlue,
                 padding: "5px 26px",
                 borderRadius: 3,
                 fontSize: 13,
                 fontWeight: 700,
                 fontFamily: FONT,
-                letterSpacing: 1,
-                boxShadow: "0 2px 4px rgba(0,0,0,0.15)",
+                letterSpacing: 1
               }}
             >
               {top}

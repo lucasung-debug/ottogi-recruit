@@ -30,114 +30,123 @@ function PosterHeader({ title, logoUrl }) {
 
   return (
     <div style={{ width: POSTER_W }}>
-      {/* 로고 바 */}
-      <div
-        style={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          padding: "12px 20px",
-          background: "white",
-          borderBottom: `1px solid ${C.border}`,
-        }}
-      >
-        {/* 좌측: 오뚜기 원형 로고 */}
-        <div
-          style={{
-            width: 48,
-            height: 48,
-            borderRadius: "50%",
-            background: `radial-gradient(circle at 50% 40%, ${C.red} 60%, #CC0010 100%)`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            border: "2px solid white",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.18)",
-            flexShrink: 0,
-          }}
-        >
-          <span
-            style={{
-              color: "white",
-              fontWeight: 800,
-              fontSize: 13,
-              fontFamily: FONT,
-              letterSpacing: -0.5,
-            }}
-          >
-            오뚜기
-          </span>
-        </div>
-
-        {/* 우측: 업로드 로고 */}
-        {logoUrl && (
-          <img
-            src={logoUrl}
-            alt="로고"
-            style={{ height: 40, objectFit: "contain" }}
-            crossOrigin="anonymous"
-          />
-        )}
-      </div>
-
-      {/* 배너 이미지 + 제목 오버레이 */}
+      {/* 배너 이미지 + 로고 + 제목 통합 오버레이 */}
       <div style={{ position: "relative", width: POSTER_W }}>
         <img
           src={`${import.meta.env.BASE_URL}images/banner.png`}
           alt="배너"
           style={{
             width: "100%",
-            height: 200,
+            height: 220,
             objectFit: "cover",
             display: "block",
           }}
           crossOrigin="anonymous"
         />
-        {/* 텍스트 오버레이 (이미지 위) */}
+        {/* 전체 어두운 오버레이 */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-            justifyContent: "center",
             background: "rgba(0,0,0,0.28)",
-            gap: 8,
           }}
         >
-          {top && (
+          {/* 상단: 로고 영역 */}
+          <div
+            style={{
+              position: "absolute",
+              top: 16,
+              left: 20,
+              right: 20,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            {/* 좌측: 오뚜기 원형 로고 */}
             <div
               style={{
-                background: C.red,
-                color: "white",
-                padding: "4px 20px",
-                borderRadius: 20,
-                fontSize: 14,
-                fontWeight: 700,
-                fontFamily: FONT,
-                letterSpacing: 1,
+                width: 48,
+                height: 48,
+                borderRadius: "50%",
+                background: `radial-gradient(circle at 50% 40%, ${C.red} 60%, #CC0010 100%)`,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                border: "2px solid white",
+                boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
+                flexShrink: 0,
               }}
             >
-              {top}
+              <span
+                style={{
+                  color: "white",
+                  fontWeight: 800,
+                  fontSize: 13,
+                  fontFamily: FONT,
+                  letterSpacing: -0.5,
+                }}
+              >
+                오뚜기
+              </span>
             </div>
-          )}
-          {main && (
-            <div
-              style={{
-                fontSize: 34,
-                fontWeight: 800,
-                fontFamily: FONT,
-                color: "white",
-                letterSpacing: 2,
-                lineHeight: 1.3,
-                textAlign: "center",
-                textShadow: "0 2px 8px rgba(0,0,0,0.5)",
-              }}
-            >
-              {main}
-            </div>
-          )}
+
+            {/* 우측: 업로드 로고 */}
+            {logoUrl && (
+              <img
+                src={logoUrl}
+                alt="로고"
+                style={{ height: 40, objectFit: "contain" }}
+                crossOrigin="anonymous"
+              />
+            )}
+          </div>
+
+          {/* 중앙: 텍스트 오버레이 */}
+          <div
+            style={{
+              position: "absolute",
+              inset: 0,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 10,
+            }}
+          >
+            {top && (
+              <div
+                style={{
+                  background: C.red,
+                  color: "white",
+                  padding: "4px 24px",
+                  borderRadius: 20,
+                  fontSize: 14,
+                  fontWeight: 700,
+                  fontFamily: FONT,
+                  letterSpacing: 1,
+                }}
+              >
+                {top}
+              </div>
+            )}
+            {main && (
+              <div
+                style={{
+                  fontSize: 34,
+                  fontWeight: 800,
+                  fontFamily: FONT,
+                  color: "white",
+                  letterSpacing: 2,
+                  lineHeight: 1.3,
+                  textAlign: "center",
+                  textShadow: "0 2px 8px rgba(0,0,0,0.5)",
+                }}
+              >
+                {main}
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
@@ -197,19 +206,20 @@ function PosterTable({ jobs }) {
                   textAlign: "center",
                   fontWeight: 700,
                   fontSize: 13,
+                  color: C.darkBlue,
                 }}
               >
                 {j.jobName}
               </td>
-              <td style={cs}>
+              <td style={{ ...cs, color: "#111111" }}>
                 {j.tasks.map((t, k) => (
-                  <div key={k}>{t}</div>
+                  <div key={k} style={{ textIndent: "-1em", paddingLeft: "1em" }}>{t}</div>
                 ))}
               </td>
-              <td style={{ ...cs, textAlign: "center", fontSize: 12 }}>
+              <td style={{ ...cs, textAlign: "center", fontSize: 12, color: "#111111" }}>
                 {j.major || "전공무관"}
               </td>
-              <td style={{ ...cs, borderRight: "none" }}>
+              <td style={{ ...cs, borderRight: "none", color: "#111111" }}>
                 {j.required.length > 0 && (
                   <div>
                     <div
@@ -223,7 +233,7 @@ function PosterTable({ jobs }) {
                       [ 필수사항 ]
                     </div>
                     {j.required.map((q, k) => (
-                      <div key={k}>{q}</div>
+                      <div key={k} style={{ textIndent: "-1em", paddingLeft: "1em" }}>{q}</div>
                     ))}
                   </div>
                 )}
@@ -233,14 +243,14 @@ function PosterTable({ jobs }) {
                       style={{
                         fontWeight: 700,
                         fontFamily: FONT,
-                        color: C.green,
+                        color: C.darkBlue,
                         marginBottom: 3,
                       }}
                     >
                       [ 우대사항 ]
                     </div>
                     {j.preferred.map((q, k) => (
-                      <div key={k}>{q}</div>
+                      <div key={k} style={{ textIndent: "-1em", paddingLeft: "1em" }}>{q}</div>
                     ))}
                   </div>
                 )}
@@ -332,53 +342,79 @@ function ProcessChart({ steps }) {
       <div
         style={{
           display: "flex",
-          alignItems: "center",
+          alignItems: "flex-start",
           justifyContent: "center",
-          gap: 0,
           flexWrap: "wrap",
+          rowGap: 20,
           padding: "16px 0",
         }}
       >
         {steps.map((s, i) => {
           const isLast = i === steps.length - 1;
           return (
-          <div key={i} style={{ display: "flex", alignItems: "center" }}>
-            <div
-              style={{
-                width: 80,
-                height: 80,
-                borderRadius: "50%",
-                border: `2px solid ${isLast ? C.yellow : "#AAAAAA"}`,
-                background: isLast ? C.yellow : C.white,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                fontSize: 12,
-                fontWeight: 700,
-                fontFamily: FONT,
-                color: C.darkBlue,
-                textAlign: "center",
-                lineHeight: 1.3,
-                padding: "0 6px",
-                boxSizing: "border-box",
-              }}
-            >
-              {s}
-            </div>
-            {i < steps.length - 1 && (
+            <div key={i} style={{ display: "flex", alignItems: "center" }}>
+              {/* 스텝 노드 */}
               <div
                 style={{
-                  color: C.yellow,
-                  fontSize: 20,
-                  fontWeight: 900,
-                  margin: "0 4px",
-                  WebkitTextStroke: `1px ${C.darkBlue}`,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  gap: 5,
                 }}
               >
-                ▶
+                {/* STEP 번호 레이블 */}
+                <span
+                  style={{
+                    fontSize: 10,
+                    fontWeight: 700,
+                    fontFamily: FONT,
+                    color: C.darkBlue,
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  STEP {i + 1}
+                </span>
+                {/* 원형 노드 */}
+                <div
+                  style={{
+                    width: 80,
+                    height: 80,
+                    borderRadius: "50%",
+                    border: `2px solid ${isLast ? C.yellow : "#AAAAAA"}`,
+                    background: isLast ? C.yellow : C.white,
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    fontSize: 12,
+                    fontWeight: 700,
+                    fontFamily: FONT,
+                    color: C.darkBlue,
+                    textAlign: "center",
+                    lineHeight: 1.4,
+                    padding: "0 8px",
+                    boxSizing: "border-box",
+                    wordBreak: "keep-all",
+                  }}
+                >
+                  {s}
+                </div>
               </div>
-            )}
-          </div>
+              {/* 화살표 */}
+              {i < steps.length - 1 && (
+                <div
+                  style={{
+                    color: C.yellow,
+                    fontSize: 20,
+                    fontWeight: 900,
+                    margin: "0 4px",
+                    marginTop: 20,
+                    WebkitTextStroke: `1px ${C.darkBlue}`,
+                  }}
+                >
+                  ▶
+                </div>
+              )}
+            </div>
           );
         })}
       </div>

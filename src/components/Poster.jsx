@@ -43,111 +43,66 @@ function PosterHeader({ title, logoUrl }) {
           }}
           crossOrigin="anonymous"
         />
-        {/* 전체 어두운 오버레이 */}
+        {/* 텍스트 오버레이 — 투명 배경, 배너 이미지 그대로 노출 */}
         <div
           style={{
             position: "absolute",
             inset: 0,
-            background: "rgba(0,0,0,0.28)",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 10,
           }}
         >
-          {/* 상단: 로고 영역 */}
-          <div
+          {top && (
+            <div
+              style={{
+                background: C.red,
+                color: "white",
+                padding: "4px 24px",
+                borderRadius: 20,
+                fontSize: 14,
+                fontWeight: 700,
+                fontFamily: FONT,
+                letterSpacing: 1,
+              }}
+            >
+              {top}
+            </div>
+          )}
+          {main && (
+            <div
+              style={{
+                fontSize: 34,
+                fontWeight: 800,
+                fontFamily: FONT,
+                color: C.darkBlue,
+                letterSpacing: 2,
+                lineHeight: 1.3,
+                textAlign: "center",
+              }}
+            >
+              {main}
+            </div>
+          )}
+        </div>
+
+        {/* 우측 상단: 업로드 로고 (있을 때만) */}
+        {logoUrl && (
+          <img
+            src={logoUrl}
+            alt="로고"
             style={{
               position: "absolute",
               top: 16,
-              left: 20,
               right: 20,
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
+              height: 40,
+              objectFit: "contain",
             }}
-          >
-            {/* 좌측: 오뚜기 원형 로고 */}
-            <div
-              style={{
-                width: 48,
-                height: 48,
-                borderRadius: "50%",
-                background: `radial-gradient(circle at 50% 40%, ${C.red} 60%, #CC0010 100%)`,
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                border: "2px solid white",
-                boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
-                flexShrink: 0,
-              }}
-            >
-              <span
-                style={{
-                  color: "white",
-                  fontWeight: 800,
-                  fontSize: 13,
-                  fontFamily: FONT,
-                  letterSpacing: -0.5,
-                }}
-              >
-                오뚜기
-              </span>
-            </div>
-
-            {/* 우측: 업로드 로고 */}
-            {logoUrl && (
-              <img
-                src={logoUrl}
-                alt="로고"
-                style={{ height: 40, objectFit: "contain" }}
-                crossOrigin="anonymous"
-              />
-            )}
-          </div>
-
-          {/* 중앙: 텍스트 오버레이 */}
-          <div
-            style={{
-              position: "absolute",
-              inset: 0,
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              gap: 10,
-            }}
-          >
-            {top && (
-              <div
-                style={{
-                  background: C.red,
-                  color: "white",
-                  padding: "4px 24px",
-                  borderRadius: 20,
-                  fontSize: 14,
-                  fontWeight: 700,
-                  fontFamily: FONT,
-                  letterSpacing: 1,
-                }}
-              >
-                {top}
-              </div>
-            )}
-            {main && (
-              <div
-                style={{
-                  fontSize: 34,
-                  fontWeight: 800,
-                  fontFamily: FONT,
-                  color: "white",
-                  letterSpacing: 2,
-                  lineHeight: 1.3,
-                  textAlign: "center",
-                  textShadow: "0 2px 8px rgba(0,0,0,0.5)",
-                }}
-              >
-                {main}
-              </div>
-            )}
-          </div>
-        </div>
+            crossOrigin="anonymous"
+          />
+        )}
       </div>
     </div>
   );

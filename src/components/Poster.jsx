@@ -7,16 +7,29 @@ function SectionHeader({ children }) {
   return (
     <div
       style={{
+        display: "flex",
+        alignItems: "center",
+        gap: 8,
         fontSize: 15,
         fontWeight: 700,
         fontFamily: FONT,
         color: C.darkBlue,
         borderBottom: `2px solid ${C.darkBlue}`,
-        paddingBottom: 6,
-        marginBottom: 12,
+        paddingBottom: 7,
+        marginBottom: 14,
         letterSpacing: 0.5,
       }}
     >
+      <span
+        style={{
+          display: "inline-block",
+          width: 4,
+          height: 16,
+          background: C.yellow,
+          borderRadius: 2,
+          flexShrink: 0,
+        }}
+      />
       {children}
     </div>
   );
@@ -54,22 +67,21 @@ function PosterHeader({ title, logoUrl }) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 8,
-            paddingTop: 16,
+            gap: 6,
           }}
         >
           {top && (
             <div
               style={{
-                background: C.white,
+                background: "rgba(255,255,255,0.93)",
                 color: C.darkBlue,
-                padding: "5px 28px",
-                borderRadius: 4,
-                fontSize: 14,
+                padding: "5px 26px",
+                borderRadius: 3,
+                fontSize: 13,
                 fontWeight: 700,
                 fontFamily: FONT,
                 letterSpacing: 1,
-                border: `1px solid ${C.border}`,
+                boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
               }}
             >
               {top}
@@ -99,9 +111,9 @@ function PosterHeader({ title, logoUrl }) {
             alt="로고"
             style={{
               position: "absolute",
-              top: 16,
-              right: 20,
-              height: 44,
+              top: 14,
+              right: 18,
+              height: 35,
               objectFit: "contain",
             }}
             crossOrigin="anonymous"
@@ -264,29 +276,38 @@ function CommonQuals() {
   return (
     <div style={{ padding: "20px 20px 10px" }}>
       <SectionHeader>공통지원자격</SectionHeader>
-      {[
-        { t: "직무별 요구기준에 적합한 학위소지자", h: true },
-        { t: "남성의 경우, 병역 필 또는 면제자" },
-        { t: "해외 여행(또는 해외 출장)에 결격사유가 없는 자" },
-        { t: "취업보호대상자는 관련 법령에 의거하여 우대" },
-      ].map((it, i) => (
-        <div
-          key={i}
-          style={{
-            display: "flex",
-            gap: 8,
-            marginBottom: 5,
-            fontSize: 13,
-            fontWeight: it.h ? 500 : 200,
-            fontFamily: FONT,
-            lineHeight: 1.6,
-            color: it.h ? C.red : C.text,
-          }}
-        >
-          <span>•</span>
-          <span>{it.t}</span>
-        </div>
-      ))}
+      <div
+        style={{
+          background: "#F8F9FF",
+          border: "1px solid #E0E4F5",
+          borderRadius: 6,
+          padding: "12px 16px",
+        }}
+      >
+        {[
+          { t: "직무별 요구기준에 적합한 학위소지자", h: true },
+          { t: "남성의 경우, 병역 필 또는 면제자" },
+          { t: "해외 여행(또는 해외 출장)에 결격사유가 없는 자" },
+          { t: "취업보호대상자는 관련 법령에 의거하여 우대" },
+        ].map((it, i, arr) => (
+          <div
+            key={i}
+            style={{
+              display: "flex",
+              gap: 8,
+              marginBottom: i < arr.length - 1 ? 5 : 0,
+              fontSize: 13,
+              fontWeight: it.h ? 500 : 200,
+              fontFamily: FONT,
+              lineHeight: 1.6,
+              color: it.h ? C.red : C.text,
+            }}
+          >
+            <span>•</span>
+            <span>{it.t}</span>
+          </div>
+        ))}
+      </div>
     </div>
   );
 }
@@ -297,6 +318,35 @@ function AppPeriod({ schedule, year }) {
   return (
     <div style={{ padding: "20px 20px 10px" }}>
       <SectionHeader>서류 접수기간 및 방법</SectionHeader>
+      {/* 접수기간 강조 */}
+      <div
+        style={{
+          background: "#EEF1FF",
+          border: "1px solid #C5CCEE",
+          borderRadius: 6,
+          padding: "10px 14px",
+          marginBottom: 10,
+          display: "flex",
+          alignItems: "center",
+          gap: 8,
+        }}
+      >
+        <span
+          style={{
+            fontWeight: 700,
+            fontFamily: FONT,
+            fontSize: 13,
+            color: C.darkBlue,
+            flexShrink: 0,
+          }}
+        >
+          접수기간
+        </span>
+        <span style={{ color: "#AAAAAA", fontSize: 12 }}>|</span>
+        <strong style={{ color: C.red, fontWeight: 700, fontFamily: FONT, fontSize: 13 }}>
+          {formatted}
+        </strong>
+      </div>
       <div
         style={{
           fontSize: 13,
@@ -306,13 +356,6 @@ function AppPeriod({ schedule, year }) {
           color: C.text,
         }}
       >
-        <div style={{ display: "flex", gap: 8 }}>
-          <span>•</span>
-          <span>
-            접수기간:{" "}
-            <strong style={{ color: C.red, fontWeight: 700 }}>{formatted}</strong>
-          </span>
-        </div>
         <div style={{ display: "flex", gap: 8 }}>
           <span>•</span>
           <span>접수방법: 오뚜기라면 채용홈페이지 內 온라인 지원</span>
@@ -376,7 +419,8 @@ function ProcessChart({ steps }) {
                 alignItems: "center",
                 gap: 4,
                 marginLeft,
-                zIndex: steps.length - i,
+                zIndex: i + 1,
+                position: "relative",
               }}
             >
               {/* STEP 번호 레이블 */}
@@ -407,7 +451,11 @@ function ProcessChart({ steps }) {
                   color: textColor,
                   textAlign: "center",
                   lineHeight: 1.3,
-                  padding: isFirst ? `0 ${ARROW + 8}px 0 8px` : `0 ${ARROW + 8}px 0 ${ARROW + 8}px`,
+                  padding: isFirst
+                    ? `0 ${ARROW + 8}px 0 8px`
+                    : isLast
+                    ? `0 8px 0 ${ARROW + 8}px`
+                    : `0 ${ARROW + 8}px 0 ${ARROW + 8}px`,
                   boxSizing: "border-box",
                   wordBreak: "keep-all",
                 }}
@@ -435,8 +483,8 @@ function AdditionalInfo({ finalHireMonth }) {
           color: C.text,
           background: C.gray,
           padding: "12px 16px",
-          borderRadius: 4,
-          borderLeft: `4px solid ${C.sky}`,
+          borderRadius: 6,
+          borderLeft: `4px solid ${C.darkBlue}`,
         }}
       >
         <div style={{ display: "flex", gap: 8 }}>
@@ -445,7 +493,7 @@ function AdditionalInfo({ finalHireMonth }) {
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <span>•</span>
-          <span>인성/업무적응도 검사</span>
+          <span>인성/업무적응도 검사 : 온라인 실시</span>
         </div>
         <div style={{ display: "flex", gap: 8 }}>
           <span>•</span>
@@ -501,7 +549,7 @@ function Notes() {
           color: C.text,
           background: C.cream,
           border: `1px solid ${C.yellow}`,
-          borderRadius: 4,
+          borderRadius: 6,
           padding: "14px 16px",
         }}
       >

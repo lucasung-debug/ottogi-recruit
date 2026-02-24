@@ -28,8 +28,8 @@ function PosterHeader({ title, logoUrl }) {
   const top = lines[0] || "";
   const main = lines.slice(1).join(" ") || "";
 
-  // banner.png 자연 비율: 2213×634 @ 860px → 246px
-  const BANNER_H = 246;
+  // 배너 높이: 웹 포스터 레이아웃 기준 최적화
+  const BANNER_H = 180;
 
   return (
     <div style={{ width: POSTER_W }}>
@@ -58,8 +58,8 @@ function PosterHeader({ title, logoUrl }) {
             flexDirection: "column",
             alignItems: "center",
             justifyContent: "center",
-            gap: 10,
-            paddingTop: 20,
+            gap: 8,
+            paddingTop: 12,
           }}
         >
           {top && (
@@ -67,9 +67,9 @@ function PosterHeader({ title, logoUrl }) {
               style={{
                 background: C.red,
                 color: "white",
-                padding: "5px 30px",
+                padding: "4px 24px",
                 borderRadius: 20,
-                fontSize: 16,
+                fontSize: 13,
                 fontWeight: 700,
                 fontFamily: FONT,
                 letterSpacing: 1,
@@ -81,7 +81,7 @@ function PosterHeader({ title, logoUrl }) {
           {main && (
             <div
               style={{
-                fontSize: 42,
+                fontSize: 30,
                 fontWeight: 800,
                 fontFamily: FONT,
                 color: C.darkBlue,

@@ -1,5 +1,7 @@
 export const POSTER_W = 860;
 
+export const FONT = "'OtokiSans3N', 'Apple SD Gothic Neo', 'Malgun Gothic', sans-serif";
+
 export const C = {
   red: "#E60012",
   darkBlue: "#1B3A8C",

@@ -6,5 +6,5 @@ import react from "@vitejs/plugin-react";
 // Vercel/Netlify 배포 시에는 "/" 유지
 export default defineConfig({
   plugins: [react()],
-  base: "/ottogi-recruit/",
+  base: '/ottogi-recruit/',
 });

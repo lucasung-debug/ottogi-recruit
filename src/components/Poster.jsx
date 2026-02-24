@@ -28,10 +28,13 @@ function PosterHeader({ title, logoUrl }) {
   const top = lines[0] || "";
   const main = lines.slice(1).join(" ") || "";
 
+  // banner.png 자연 비율: 2213×634 @ 860px → 246px
+  const BANNER_H = 246;
+
   return (
     <div style={{ width: POSTER_W }}>
       {/* 배너: overflow:hidden + 이미지 좌측 오프셋으로 banner.png 내 오뚜기 원형 로고 숨김 */}
-      <div style={{ position: "relative", width: POSTER_W, height: 220, overflow: "hidden" }}>
+      <div style={{ position: "relative", width: POSTER_W, height: BANNER_H, overflow: "hidden" }}>
         <img
           src={`${import.meta.env.BASE_URL}images/banner.png`}
           alt="배너"
@@ -39,13 +42,14 @@ function PosterHeader({ title, logoUrl }) {
             position: "absolute",
             left: -90,
             width: POSTER_W + 90,
-            height: 220,
+            height: BANNER_H,
             objectFit: "cover",
             display: "block",
           }}
           crossOrigin="anonymous"
         />
-        {/* 텍스트 오버레이 — 투명 배경, 배너 이미지 그대로 노출 */}
+
+        {/* 텍스트 오버레이 — 흰색 리본 영역 기준 중앙 정렬 */}
         <div
           style={{
             position: "absolute",
@@ -55,6 +59,7 @@ function PosterHeader({ title, logoUrl }) {
             alignItems: "center",
             justifyContent: "center",
             gap: 10,
+            paddingTop: 20,
           }}
         >
           {top && (
@@ -62,9 +67,9 @@ function PosterHeader({ title, logoUrl }) {
               style={{
                 background: C.red,
                 color: "white",
-                padding: "4px 24px",
+                padding: "5px 30px",
                 borderRadius: 20,
-                fontSize: 14,
+                fontSize: 16,
                 fontWeight: 700,
                 fontFamily: FONT,
                 letterSpacing: 1,
@@ -76,12 +81,12 @@ function PosterHeader({ title, logoUrl }) {
           {main && (
             <div
               style={{
-                fontSize: 34,
+                fontSize: 42,
                 fontWeight: 800,
                 fontFamily: FONT,
                 color: C.darkBlue,
                 letterSpacing: 2,
-                lineHeight: 1.3,
+                lineHeight: 1.2,
                 textAlign: "center",
               }}
             >
@@ -90,8 +95,8 @@ function PosterHeader({ title, logoUrl }) {
           )}
         </div>
 
-        {/* 우측 상단: 업로드 로고 (있을 때만) */}
-        {logoUrl && (
+        {/* 로고 영역: 업로드 시 로고 표시, 미업로드 시 첨부 요청 플레이스홀더 */}
+        {logoUrl ? (
           <img
             src={logoUrl}
             alt="로고"
@@ -99,11 +104,36 @@ function PosterHeader({ title, logoUrl }) {
               position: "absolute",
               top: 16,
               right: 20,
-              height: 40,
+              height: 44,
               objectFit: "contain",
             }}
             crossOrigin="anonymous"
           />
+        ) : (
+          <div
+            style={{
+              position: "absolute",
+              top: 14,
+              right: 16,
+              width: 90,
+              height: 40,
+              border: "2px dashed rgba(255,255,255,0.75)",
+              borderRadius: 8,
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: 2,
+              color: "rgba(255,255,255,0.85)",
+              fontSize: 11,
+              fontFamily: FONT,
+              fontWeight: 600,
+              letterSpacing: 0.5,
+            }}
+          >
+            <span style={{ fontSize: 16, lineHeight: 1 }}>+</span>
+            <span>로고 첨부</span>
+          </div>
         )}
       </div>
     </div>

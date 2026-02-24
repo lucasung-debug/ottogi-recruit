@@ -28,20 +28,17 @@ function PosterHeader({ title, logoUrl }) {
   const top = lines[0] || "";
   const main = lines.slice(1).join(" ") || "";
 
-  const BANNER_H = 400;
-
   return (
     <div style={{ width: POSTER_W }}>
       {/* 배너 이미지 + 텍스트 오버레이 */}
-      <div style={{ position: "relative", width: POSTER_W, height: BANNER_H }}>
+      <div style={{ position: "relative", width: POSTER_W }}>
         <img
           src={`${import.meta.env.BASE_URL}images/banner.png`}
           alt="배너"
           style={{
             width: "100%",
-            height: BANNER_H,
-            objectFit: "cover",
-            display: "contain",
+            height: "auto",
+            display: "block",
           }}
           crossOrigin="anonymous"
         />
@@ -62,14 +59,15 @@ function PosterHeader({ title, logoUrl }) {
           {top && (
             <div
               style={{
-                background: C.red,
-                color: "white",
-                padding: "4px 24px",
-                borderRadius: 20,
+                background: C.white,
+                color: C.darkBlue,
+                padding: "5px 28px",
+                borderRadius: 4,
                 fontSize: 14,
                 fontWeight: 700,
                 fontFamily: FONT,
                 letterSpacing: 1,
+                border: `1px solid ${C.border}`,
               }}
             >
               {top}

@@ -7,12 +7,12 @@ function SectionHeader({ children }) {
   return (
     <div
       style={{
-        background: C.darkBlue,
-        color: "white",
         fontSize: 15,
         fontWeight: 700,
         fontFamily: FONT,
-        padding: "8px 16px",
+        color: C.darkBlue,
+        borderBottom: `2px solid ${C.darkBlue}`,
+        paddingBottom: 6,
         marginBottom: 12,
         letterSpacing: 0.5,
       }}
@@ -148,8 +148,8 @@ function PosterHeader({ title, logoUrl }) {
 function PosterTable({ jobs }) {
   if (!jobs.length) return null;
   const hs = {
-    background: C.sky,
-    color: "white",
+    background: C.yellow,
+    color: C.darkBlue,
     fontWeight: 700,
     fontFamily: FONT,
     fontSize: 13,
@@ -326,11 +326,6 @@ function AppPeriod({ schedule, year }) {
 /* ===== 채용 프로세스 ===== */
 function ProcessChart({ steps }) {
   if (!steps.length) return null;
-  const colors = steps.map((_, i) =>
-    i === steps.length - 1
-      ? C.red
-      : [C.sky, "#5DADE2", "#3498DB", "#2E86C1", "#2874A6"][i % 5]
-  );
   return (
     <div style={{ padding: "20px 20px 10px" }}>
       <SectionHeader>채용 프로세스</SectionHeader>
@@ -344,21 +339,28 @@ function ProcessChart({ steps }) {
           padding: "16px 0",
         }}
       >
-        {steps.map((s, i) => (
+        {steps.map((s, i) => {
+          const isLast = i === steps.length - 1;
+          return (
           <div key={i} style={{ display: "flex", alignItems: "center" }}>
             <div
               style={{
-                background: colors[i],
-                color: "white",
-                padding: "12px 16px",
-                borderRadius: 30,
-                fontSize: 13,
+                width: 80,
+                height: 80,
+                borderRadius: "50%",
+                border: `2px solid ${isLast ? C.yellow : "#AAAAAA"}`,
+                background: isLast ? C.yellow : C.white,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontSize: 12,
                 fontWeight: 700,
                 fontFamily: FONT,
+                color: C.darkBlue,
                 textAlign: "center",
-                minWidth: 88,
-                boxShadow: "0 2px 6px rgba(0,0,0,0.15)",
-                whiteSpace: "nowrap",
+                lineHeight: 1.3,
+                padding: "0 6px",
+                boxSizing: "border-box",
               }}
             >
               {s}
@@ -366,17 +368,19 @@ function ProcessChart({ steps }) {
             {i < steps.length - 1 && (
               <div
                 style={{
-                  color: C.darkBlue,
-                  fontSize: 22,
+                  color: C.yellow,
+                  fontSize: 20,
                   fontWeight: 900,
                   margin: "0 4px",
+                  WebkitTextStroke: `1px ${C.darkBlue}`,
                 }}
               >
-                ›
+                ▶
               </div>
             )}
           </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );
@@ -459,8 +463,8 @@ function Notes() {
           fontFamily: FONT,
           lineHeight: 1.8,
           color: C.text,
-          background: "#FFF8F8",
-          border: `1px solid #FFCDD2`,
+          background: C.cream,
+          border: `1px solid ${C.yellow}`,
           borderRadius: 4,
           padding: "14px 16px",
         }}

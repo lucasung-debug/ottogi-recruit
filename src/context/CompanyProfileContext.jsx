@@ -1,4 +1,4 @@
-import { createContext, useContext, useMemo } from "react";
+import { createContext, useContext, useMemo, useCallback } from "react";
 import { useLocalStorage } from "../hooks/useLocalStorage";
 import { DEFAULT_COMPANY_PROFILE } from "../config/defaults";
 import { generateTheme } from "../styles/theme";
@@ -18,9 +18,29 @@ export function CompanyProfileProvider({ children }) {
     [profile.brandColors]
   );
 
+  const updateField = useCallback(
+    (path, value) => {
+      setProfile((prev) => {
+        const keys = path.split(".");
+        if (keys.length === 1) {
+          return { ...prev, [keys[0]]: value };
+        }
+        const next = { ...prev };
+        let obj = next;
+        for (let i = 0; i < keys.length - 1; i++) {
+          obj[keys[i]] = { ...obj[keys[i]] };
+          obj = obj[keys[i]];
+        }
+        obj[keys[keys.length - 1]] = value;
+        return next;
+      });
+    },
+    [setProfile]
+  );
+
   const value = useMemo(
-    () => ({ profile, setProfile, theme }),
-    [profile, setProfile, theme]
+    () => ({ profile, setProfile, updateField, theme }),
+    [profile, setProfile, updateField, theme]
   );
 
   return (

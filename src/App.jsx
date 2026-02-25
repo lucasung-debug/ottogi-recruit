@@ -11,6 +11,7 @@ import { calcFinalHireMonth, processLogo } from "./utils/helpers";
 import { useCompanyProfile } from "./context/CompanyProfileContext";
 import InputPage from "./pages/InputPage";
 import PreviewPage from "./pages/PreviewPage";
+import SetupPage from "./pages/SetupPage";
 
 function AppContent() {
   const { profile } = useCompanyProfile();
@@ -187,7 +188,13 @@ function AppContent() {
           />
         }
       />
-      <Route path="*" element={<Navigate to="/create" replace />} />
+      <Route path="/setup" element={<SetupPage />} />
+      <Route
+        path="*"
+        element={
+          <Navigate to={profile.isConfigured ? "/create" : "/setup"} replace />
+        }
+      />
     </Routes>
   );
 }

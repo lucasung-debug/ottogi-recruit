@@ -63,15 +63,16 @@ export default function EditableList({ items, onChange, hasHighlight = false, pl
     setEditingIdx(-1);
   };
 
-  const btnClass = "px-2 py-1 text-xs rounded border border-gray-300 hover:bg-gray-100 cursor-pointer disabled:opacity-30 disabled:cursor-default";
-
   return (
-    <div className="space-y-2">
+    <div className="space-y-1.5">
       {items.map((item, i) => (
-        <div key={i} className="flex items-center gap-2 p-2 bg-gray-50 rounded-lg border border-gray-200">
+        <div
+          key={i}
+          className="flex items-center gap-2 px-3 py-2.5 bg-[#f5f5f7] rounded-xl group transition-colors hover:bg-[#ebebed]"
+        >
           {editingIdx === i ? (
             <input
-              className="flex-1 px-2 py-1 text-sm border border-blue-400 rounded outline-none"
+              className="apple-input flex-1 !py-1.5 !text-[13px] !rounded-lg"
               value={editText}
               onChange={(e) => setEditText(e.target.value)}
               onBlur={() => finishEdit(i)}
@@ -80,39 +81,58 @@ export default function EditableList({ items, onChange, hasHighlight = false, pl
             />
           ) : (
             <span
-              className={`flex-1 text-sm cursor-pointer hover:bg-white rounded px-1 ${getHighlight(item) ? "font-bold text-red-600" : "text-gray-700"}`}
+              className={`flex-1 text-[13px] cursor-pointer rounded-lg px-1.5 py-0.5 transition-colors hover:bg-white ${
+                getHighlight(item) ? "font-semibold text-[#ff3b30]" : "text-[#1d1d1f]"
+              }`}
               onClick={() => startEdit(i)}
-              title="클릭하여 편집"
             >
               {getText(item)}
             </span>
           )}
-          <div className="flex gap-1 shrink-0">
-            <button className={btnClass} onClick={() => handleMoveUp(i)} disabled={i === 0} title="위로">&#x25B2;</button>
-            <button className={btnClass} onClick={() => handleMoveDown(i)} disabled={i === items.length - 1} title="아래로">&#x25BC;</button>
+          <div className="flex gap-0.5 shrink-0 opacity-0 group-hover:opacity-100 transition-opacity">
+            <button
+              className="w-7 h-7 flex items-center justify-center rounded-lg text-[11px] text-[#86868b] hover:bg-white transition-colors cursor-pointer disabled:opacity-30"
+              onClick={() => handleMoveUp(i)}
+              disabled={i === 0}
+            >
+              &#x25B2;
+            </button>
+            <button
+              className="w-7 h-7 flex items-center justify-center rounded-lg text-[11px] text-[#86868b] hover:bg-white transition-colors cursor-pointer disabled:opacity-30"
+              onClick={() => handleMoveDown(i)}
+              disabled={i === items.length - 1}
+            >
+              &#x25BC;
+            </button>
             {hasHighlight && (
               <button
-                className={`${btnClass} ${getHighlight(item) ? "bg-yellow-100 border-yellow-400" : ""}`}
+                className={`w-7 h-7 flex items-center justify-center rounded-lg text-[11px] transition-colors cursor-pointer ${
+                  getHighlight(item) ? "bg-[#fff3cd] text-[#ff9500]" : "text-[#86868b] hover:bg-white"
+                }`}
                 onClick={() => handleToggleHighlight(i)}
-                title="강조 토글"
               >
                 &#x2B50;
               </button>
             )}
-            <button className={`${btnClass} text-red-500 hover:bg-red-50`} onClick={() => handleRemove(i)} title="삭제">&#x2715;</button>
+            <button
+              className="w-7 h-7 flex items-center justify-center rounded-lg text-[11px] text-[#ff3b30]/60 hover:bg-[#ff3b30]/5 hover:text-[#ff3b30] transition-colors cursor-pointer"
+              onClick={() => handleRemove(i)}
+            >
+              &#x2715;
+            </button>
           </div>
         </div>
       ))}
-      <div className="flex gap-2">
+      <div className="flex gap-2 mt-2">
         <input
-          className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-blue-400"
+          className="apple-input flex-1 !text-[13px]"
           value={newText}
           onChange={(e) => setNewText(e.target.value)}
           onKeyDown={(e) => e.key === "Enter" && handleAdd()}
           placeholder={placeholder}
         />
         <button
-          className="px-4 py-2 text-sm font-semibold text-white bg-blue-500 rounded-lg hover:bg-blue-600 disabled:opacity-50"
+          className="apple-btn apple-btn-primary !text-[13px] !py-2 !px-4 shrink-0"
           onClick={handleAdd}
           disabled={!newText.trim()}
         >

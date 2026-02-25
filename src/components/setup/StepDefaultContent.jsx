@@ -3,9 +3,9 @@ import EditableList from "../common/EditableList";
 
 function SectionBlock({ title, description, children }) {
   return (
-    <div className="p-4 bg-white rounded-xl border border-gray-200">
-      <h3 className="text-sm font-bold text-gray-700 mb-1">{title}</h3>
-      {description && <p className="text-xs text-gray-400 mb-3">{description}</p>}
+    <div className="p-5 bg-[#f5f5f7] rounded-2xl">
+      <h3 className="text-[14px] font-semibold text-[#1d1d1f] mb-0.5">{title}</h3>
+      {description && <p className="text-[12px] text-[#86868b] mb-3">{description}</p>}
       {children}
     </div>
   );
@@ -17,13 +17,13 @@ export default function StepDefaultContent() {
   return (
     <div className="space-y-6">
       <div>
-        <h2 className="text-lg font-bold text-gray-800 mb-1">기본 콘텐츠</h2>
-        <p className="text-sm text-gray-500">채용공고 포스터에 기본으로 표시되는 내용을 편집합니다.</p>
+        <h2 className="text-[22px] font-bold text-[#1d1d1f] tracking-tight">기본 콘텐츠</h2>
+        <p className="text-[14px] text-[#86868b] mt-1">채용공고 포스터에 기본으로 표시되는 내용을 편집합니다.</p>
       </div>
 
       <SectionBlock
         title="공통지원자격"
-        description="모든 직무에 공통으로 적용되는 지원 자격 요건입니다. 별표(⭐) 항목은 강조 표시됩니다."
+        description="모든 직무에 공통으로 적용되는 지원 자격 요건입니다."
       >
         <EditableList
           items={profile.commonQualifications}

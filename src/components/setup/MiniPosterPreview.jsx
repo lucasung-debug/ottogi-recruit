@@ -16,9 +16,11 @@ const SAMPLE_JOBS = [
 export default function MiniPosterPreview() {
   return (
     <div className="hidden xl:block">
-      <div className="text-xs font-semibold text-gray-500 mb-2 text-center">실시간 미리보기</div>
+      <div className="text-[11px] font-semibold text-[#86868b] mb-3 tracking-wide uppercase">
+        실시간 미리보기
+      </div>
       <div
-        className="border border-gray-200 rounded-lg overflow-hidden bg-white shadow-sm"
+        className="apple-card overflow-hidden"
         style={{ width: 260 }}
       >
         <div style={{ transform: "scale(0.3)", transformOrigin: "top left", width: 860, height: "auto" }}>

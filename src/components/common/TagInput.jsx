@@ -25,15 +25,15 @@ export default function TagInput({ tags, onChange, placeholder = "키워드 입�
   };
 
   return (
-    <div className="flex flex-wrap items-center gap-2 p-2 border border-gray-300 rounded-lg bg-white min-h-[42px]">
+    <div className="flex flex-wrap items-center gap-2 p-3 border border-[#d2d2d7] rounded-xl bg-white min-h-[44px] focus-within:border-[#0071e3] focus-within:shadow-[0_0_0_3px_rgba(0,113,227,0.12)] transition-all">
       {tags.map((tag, i) => (
         <span
           key={i}
-          className="inline-flex items-center gap-1 px-3 py-1 text-sm font-medium bg-blue-100 text-blue-700 rounded-full"
+          className="inline-flex items-center gap-1.5 px-3 py-1 text-[13px] font-medium bg-[#0071e3]/8 text-[#0071e3] rounded-full"
         >
           {tag}
           <button
-            className="text-blue-400 hover:text-blue-700 cursor-pointer"
+            className="text-[#0071e3]/50 hover:text-[#0071e3] cursor-pointer text-[11px]"
             onClick={() => removeTag(i)}
           >
             &#x2715;
@@ -41,7 +41,7 @@ export default function TagInput({ tags, onChange, placeholder = "키워드 입�
         </span>
       ))}
       <input
-        className="flex-1 min-w-[120px] px-1 py-1 text-sm outline-none bg-transparent"
+        className="flex-1 min-w-[120px] px-1 py-1 text-[13px] outline-none bg-transparent text-[#1d1d1f] placeholder:text-[#86868b]"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}

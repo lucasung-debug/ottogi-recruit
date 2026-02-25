@@ -1,4 +1,3 @@
-import { useCompanyProfile } from "../../context/CompanyProfileContext";
 import EditableList from "../common/EditableList";
 
 export default function AiResultEditor({
@@ -6,45 +5,7 @@ export default function AiResultEditor({
   onAiResultUpdate,
   onApplyTitle,
 }) {
-  const { theme } = useCompanyProfile();
-
   if (!aiResult || !aiResult.jobs?.length) return null;
-
-  const sectionStyle = {
-    marginBottom: 20,
-    padding: "20px 24px",
-    background: theme.white,
-    borderRadius: 12,
-    border: "1px solid #E8E8E8",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-  };
-  const labelStyle = {
-    fontSize: 15,
-    fontWeight: 700,
-    marginBottom: 14,
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-  };
-  const badgeStyle = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 26,
-    height: 26,
-    borderRadius: "50%",
-    fontSize: 13,
-    fontWeight: 800,
-    background: theme.success,
-    color: "white",
-    flexShrink: 0,
-  };
-  const subLabelStyle = {
-    fontSize: 12,
-    color: theme.sub,
-    marginBottom: 6,
-    fontWeight: 600,
-  };
 
   const updateJob = (jobIdx, field, value) => {
     const updatedJobs = aiResult.jobs.map((job, i) => {
@@ -55,45 +16,25 @@ export default function AiResultEditor({
   };
 
   return (
-    <div style={sectionStyle}>
-      <div style={labelStyle}>
-        <span style={badgeStyle}>2</span>
-        <span>AI 생성 결과 편집</span>
-        <span style={{ fontSize: 11, color: theme.sub, fontWeight: 400 }}>
-          (클릭하여 수정 가능)
-        </span>
+    <div className="apple-card p-5">
+      <div className="flex items-center gap-2.5 mb-4">
+        <div className="w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-bold text-white bg-[#34c759]">
+          2
+        </div>
+        <h3 className="text-[15px] font-semibold text-[#1d1d1f]">AI 생성 결과 편집</h3>
+        <span className="text-[12px] text-[#86868b]">클릭하여 수정 가능</span>
       </div>
 
       {/* 제안 제목 */}
       {aiResult.suggestedTitle && (
-        <div
-          style={{
-            marginBottom: 16,
-            padding: "12px 16px",
-            background: theme.infoLight,
-            borderRadius: 8,
-            border: `1px solid ${theme.infoBorder}`,
-          }}
-        >
-          <div style={{ fontSize: 12, color: theme.secondary, fontWeight: 600, marginBottom: 6 }}>
-            AI 추천 제목
-          </div>
-          <div style={{ fontSize: 14, fontWeight: 700, color: theme.text, whiteSpace: "pre-line" }}>
+        <div className="mb-5 p-4 bg-[#0071e3]/[0.06] rounded-xl border border-[#0071e3]/10">
+          <p className="text-[12px] font-semibold text-[#0071e3] mb-1.5">AI 추천 제목</p>
+          <p className="text-[14px] font-bold text-[#1d1d1f] whitespace-pre-line leading-relaxed">
             {aiResult.suggestedTitle}
-          </div>
+          </p>
           <button
             onClick={() => onApplyTitle(aiResult.suggestedTitle)}
-            style={{
-              marginTop: 8,
-              padding: "6px 14px",
-              background: theme.secondary,
-              color: "white",
-              border: "none",
-              borderRadius: 6,
-              fontSize: 12,
-              fontWeight: 600,
-              cursor: "pointer",
-            }}
+            className="apple-btn apple-btn-primary mt-3 text-[12px] py-1.5 px-4"
           >
             제목에 적용
           </button>
@@ -104,37 +45,24 @@ export default function AiResultEditor({
       {aiResult.jobs.map((job, jobIdx) => (
         <div
           key={jobIdx}
-          style={{
-            marginBottom: jobIdx < aiResult.jobs.length - 1 ? 20 : 0,
-            padding: 16,
-            background: theme.gray,
-            borderRadius: 10,
-            border: "1px solid #E8E8E8",
-          }}
+          className={`p-4 bg-[#f5f5f7] rounded-2xl ${
+            jobIdx < aiResult.jobs.length - 1 ? "mb-4" : ""
+          }`}
         >
           {/* 직무명 */}
-          <div style={{ marginBottom: 12 }}>
-            <div style={subLabelStyle}>직무명</div>
+          <div className="mb-3">
+            <label className="text-[12px] font-semibold text-[#6e6e73] mb-1 block">직무명</label>
             <input
               type="text"
               value={job.jobName}
               onChange={(e) => updateJob(jobIdx, "jobName", e.target.value)}
-              style={{
-                width: "100%",
-                padding: "8px 12px",
-                border: "1px solid #DDD",
-                borderRadius: 6,
-                fontSize: 14,
-                fontWeight: 600,
-                fontFamily: "inherit",
-                boxSizing: "border-box",
-              }}
+              className="apple-input font-semibold"
             />
           </div>
 
           {/* 담당업무 */}
-          <div style={{ marginBottom: 12 }}>
-            <div style={subLabelStyle}>담당업무</div>
+          <div className="mb-3">
+            <label className="text-[12px] font-semibold text-[#6e6e73] mb-1 block">담당업무</label>
             <EditableList
               items={job.tasks}
               onChange={(tasks) => updateJob(jobIdx, "tasks", tasks)}
@@ -143,27 +71,19 @@ export default function AiResultEditor({
           </div>
 
           {/* 우대전공 */}
-          <div style={{ marginBottom: 12 }}>
-            <div style={subLabelStyle}>우대 전공</div>
+          <div className="mb-3">
+            <label className="text-[12px] font-semibold text-[#6e6e73] mb-1 block">우대 전공</label>
             <input
               type="text"
               value={job.major}
               onChange={(e) => updateJob(jobIdx, "major", e.target.value)}
-              style={{
-                width: "100%",
-                padding: "8px 12px",
-                border: "1px solid #DDD",
-                borderRadius: 6,
-                fontSize: 13,
-                fontFamily: "inherit",
-                boxSizing: "border-box",
-              }}
+              className="apple-input text-[13px]"
             />
           </div>
 
           {/* 필수 자격요건 */}
-          <div style={{ marginBottom: 12 }}>
-            <div style={subLabelStyle}>필수 자격요건</div>
+          <div className="mb-3">
+            <label className="text-[12px] font-semibold text-[#6e6e73] mb-1 block">필수 자격요건</label>
             <EditableList
               items={job.required}
               onChange={(required) => updateJob(jobIdx, "required", required)}
@@ -172,8 +92,8 @@ export default function AiResultEditor({
           </div>
 
           {/* 우대사항 */}
-          <div style={{ marginBottom: 12 }}>
-            <div style={subLabelStyle}>우대사항</div>
+          <div className="mb-3">
+            <label className="text-[12px] font-semibold text-[#6e6e73] mb-1 block">우대사항</label>
             <EditableList
               items={job.preferred}
               onChange={(preferred) => updateJob(jobIdx, "preferred", preferred)}
@@ -182,8 +102,8 @@ export default function AiResultEditor({
           </div>
 
           {/* 채용 프로세스 */}
-          <div style={{ marginBottom: 12 }}>
-            <div style={subLabelStyle}>채용 프로세스</div>
+          <div className="mb-3">
+            <label className="text-[12px] font-semibold text-[#6e6e73] mb-1 block">채용 프로세스</label>
             <EditableList
               items={job.process}
               onChange={(process) => updateJob(jobIdx, "process", process)}
@@ -193,19 +113,12 @@ export default function AiResultEditor({
 
           {/* 인원 */}
           <div>
-            <div style={subLabelStyle}>채용인원</div>
+            <label className="text-[12px] font-semibold text-[#6e6e73] mb-1 block">채용인원</label>
             <input
               type="text"
               value={job.headcount}
               onChange={(e) => updateJob(jobIdx, "headcount", e.target.value)}
-              style={{
-                width: 120,
-                padding: "8px 12px",
-                border: "1px solid #DDD",
-                borderRadius: 6,
-                fontSize: 13,
-                fontFamily: "inherit",
-              }}
+              className="apple-input w-28 text-[13px]"
             />
           </div>
         </div>

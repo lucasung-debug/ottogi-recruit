@@ -1,36 +1,207 @@
 @import "tailwindcss";
 
+/* ===== OtokiSans3N: 포스터 전용 폰트 ===== */
 @font-face {
   font-family: 'OtokiSans3N';
   src: url('/fonts/OtokiSans3N-ExtraBold.ttf') format('truetype');
   font-weight: 800;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'OtokiSans3N';
   src: url('/fonts/OtokiSans3N-Bold.ttf') format('truetype');
   font-weight: 700;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'OtokiSans3N';
   src: url('/fonts/OtokiSans3N-Medium.ttf') format('truetype');
   font-weight: 500;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'OtokiSans3N';
   src: url('/fonts/OtokiSans3N-Light.ttf') format('truetype');
   font-weight: 300;
   font-style: normal;
 }
-
 @font-face {
   font-family: 'OtokiSans3N';
   src: url('/fonts/OtokiSans3N-ExtraLight.ttf') format('truetype');
   font-weight: 200;
   font-style: normal;
+}
+
+/* ===== Apple-Style Design System ===== */
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes pulse-soft {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.5; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 1.5s ease-in-out infinite;
+}
+
+/* Glass morphism header */
+.glass-header {
+  background: rgba(255, 255, 255, 0.72);
+  backdrop-filter: saturate(180%) blur(20px);
+  -webkit-backdrop-filter: saturate(180%) blur(20px);
+}
+
+/* Apple-style card */
+.apple-card {
+  background: #ffffff;
+  border-radius: 16px;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04);
+  transition: box-shadow 0.2s ease;
+}
+
+/* Apple-style input */
+.apple-input {
+  width: 100%;
+  padding: 10px 14px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: #1d1d1f;
+  background: #ffffff;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.apple-input:focus {
+  border-color: #0071e3;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+}
+
+.apple-input::placeholder {
+  color: #86868b;
+}
+
+.apple-input:disabled {
+  background: #f5f5f7;
+  color: #86868b;
+  cursor: not-allowed;
+}
+
+/* Apple-style textarea */
+.apple-textarea {
+  width: 100%;
+  padding: 12px 14px;
+  font-size: 14px;
+  line-height: 1.6;
+  color: #1d1d1f;
+  background: #ffffff;
+  border: 1px solid #d2d2d7;
+  border-radius: 10px;
+  outline: none;
+  resize: vertical;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.apple-textarea:focus {
+  border-color: #0071e3;
+  box-shadow: 0 0 0 3px rgba(0, 113, 227, 0.12);
+}
+
+/* Apple-style buttons */
+.apple-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 10px 20px;
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 1;
+  border-radius: 10px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  user-select: none;
+}
+
+.apple-btn-primary {
+  background: #0071e3;
+  color: #ffffff;
+}
+
+.apple-btn-primary:hover {
+  background: #0077ED;
+}
+
+.apple-btn-secondary {
+  background: rgba(0, 0, 0, 0.05);
+  color: #1d1d1f;
+}
+
+.apple-btn-secondary:hover {
+  background: rgba(0, 0, 0, 0.08);
+}
+
+.apple-btn-ghost {
+  background: transparent;
+  color: #0071e3;
+  padding: 8px 12px;
+}
+
+.apple-btn-ghost:hover {
+  background: rgba(0, 113, 227, 0.06);
+}
+
+.apple-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+/* Segmented control */
+.segmented-control {
+  display: inline-flex;
+  width: 100%;
+  padding: 3px;
+  background: rgba(0, 0, 0, 0.06);
+  border-radius: 10px;
+  gap: 2px;
+}
+
+.segmented-item {
+  flex: 1;
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  color: #6e6e73;
+  background: transparent;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+  text-align: center;
+}
+
+.segmented-item-active {
+  color: #1d1d1f;
+  background: #ffffff;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1), 0 1px 2px rgba(0, 0, 0, 0.06);
+}
+
+/* Apple divider */
+.apple-divider {
+  height: 1px;
+  background: rgba(0, 0, 0, 0.06);
+  border: none;
+  margin: 0;
 }

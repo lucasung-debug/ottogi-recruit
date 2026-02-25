@@ -1,5 +1,4 @@
 import { matchJobs } from "../../utils/sheets";
-import { useCompanyProfile } from "../../context/CompanyProfileContext";
 
 export default function JobSelector({
   jobInput,
@@ -8,47 +7,18 @@ export default function JobSelector({
   availableJobs,
   allGroups,
 }) {
-  const { theme } = useCompanyProfile();
-
-  const sectionStyle = {
-    marginBottom: 20,
-    padding: "20px 24px",
-    background: theme.white,
-    borderRadius: 12,
-    border: "1px solid #E8E8E8",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-  };
-  const labelStyle = {
-    fontSize: 15,
-    fontWeight: 700,
-    marginBottom: 14,
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-  };
-  const badgeStyle = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 26,
-    height: 26,
-    borderRadius: "50%",
-    fontSize: 13,
-    fontWeight: 800,
-    background: theme.info,
-    color: "white",
-    flexShrink: 0,
-  };
-
   return (
-    <div style={sectionStyle}>
-      <div style={labelStyle}>
-        <span style={badgeStyle}>3</span>
-        <span>모집 직무 선택</span>
+    <div className="apple-card p-5">
+      <div className="flex items-center gap-2.5 mb-4">
+        <div className="w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-bold text-white bg-[#0071e3]">
+          3
+        </div>
+        <h3 className="text-[15px] font-semibold text-[#1d1d1f]">모집 직무 선택</h3>
       </div>
-      <div style={{ fontSize: 11, color: theme.sub, marginBottom: 8 }}>
+
+      <p className="text-[12px] text-[#86868b] mb-2">
         공고에 포함할 직무명을 콤마(,)로 구분하여 입력
-      </div>
+      </p>
       <input
         type="text"
         value={jobInput}
@@ -59,19 +29,11 @@ export default function JobSelector({
             : "먼저 시트 데이터를 불러오세요"
         }
         disabled={!sheetLoaded}
-        style={{
-          width: "100%",
-          padding: "10px 14px",
-          border: "1px solid #DDD",
-          borderRadius: 8,
-          fontSize: 14,
-          fontFamily: "inherit",
-          boxSizing: "border-box",
-          background: sheetLoaded ? theme.white : "#F0F0F0",
-        }}
+        className={`apple-input ${!sheetLoaded ? "bg-[#f5f5f7] cursor-not-allowed" : ""}`}
       />
+
       {sheetLoaded && jobInput && (
-        <div style={{ marginTop: 8, display: "flex", flexWrap: "wrap", gap: 6 }}>
+        <div className="mt-2.5 flex flex-wrap gap-1.5">
           {jobInput
             .split(",")
             .map((q) => q.trim())
@@ -81,17 +43,14 @@ export default function JobSelector({
               return (
                 <span
                   key={i}
-                  style={{
-                    padding: "4px 12px",
-                    borderRadius: 14,
-                    fontSize: 12,
-                    fontWeight: 600,
-                    background: found ? theme.successLight : theme.primaryLight,
-                    color: found ? theme.success : theme.primary,
-                    border: `1px solid ${found ? theme.success : theme.primary}`,
-                  }}
+                  className={`inline-flex items-center gap-1 px-3 py-1 rounded-full text-[12px] font-semibold ${
+                    found
+                      ? "bg-[#34c759]/10 text-[#248a3d] border border-[#34c759]/30"
+                      : "bg-[#ff3b30]/10 text-[#d70015] border border-[#ff3b30]/30"
+                  }`}
                 >
-                  {q} {found ? "✓" : "✗"}
+                  {q}
+                  <span>{found ? "✓" : "✗"}</span>
                 </span>
               );
             })}

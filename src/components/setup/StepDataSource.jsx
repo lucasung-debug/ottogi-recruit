@@ -28,91 +28,92 @@ export default function StepDataSource() {
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       <div>
-        <h2 className="text-lg font-bold text-gray-800 mb-1">데이터 소스</h2>
-        <p className="text-sm text-gray-500">채용공고 데이터를 가져올 Google Sheets를 설정합니다.</p>
+        <h2 className="text-[22px] font-bold text-[#1d1d1f] tracking-tight">데이터 소스</h2>
+        <p className="text-[14px] text-[#86868b] mt-1">채용공고 데이터를 가져올 소스를 설정합니다.</p>
       </div>
 
-      <div>
-        <label className="text-sm font-semibold text-gray-700 mb-1 block">기본 Google Sheets URL 또는 ID</label>
-        <p className="text-xs text-gray-400 mb-2">
-          시트가 &quot;링크가 있는 모든 사용자 → 보기&quot; 권한으로 공유되어야 합니다.
-        </p>
-        <div className="flex gap-2">
-          <input
-            className="flex-1 px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-blue-400"
-            value={profile.sheetConfig.defaultSheetId}
-            onChange={(e) => updateField("sheetConfig.defaultSheetId", e.target.value)}
-            placeholder="Google Sheets URL 또는 시트 ID"
-          />
-          <button
-            className={`px-4 py-2 text-sm font-semibold rounded-lg cursor-pointer shrink-0 ${
-              testing
-                ? "bg-gray-200 text-gray-500"
-                : "bg-green-500 text-white hover:bg-green-600"
+      {/* Google Sheets */}
+      <div className="space-y-4">
+        <h3 className="text-[15px] font-semibold text-[#1d1d1f]">Google Sheets</h3>
+        <div>
+          <label className="text-[13px] font-medium text-[#6e6e73] mb-1.5 block">기본 시트 URL 또는 ID</label>
+          <p className="text-[12px] text-[#86868b] mb-2">
+            시트가 &quot;링크가 있는 모든 사용자 → 보기&quot; 권한으로 공유되어야 합니다.
+          </p>
+          <div className="flex gap-2">
+            <input
+              className="apple-input flex-1"
+              value={profile.sheetConfig.defaultSheetId}
+              onChange={(e) => updateField("sheetConfig.defaultSheetId", e.target.value)}
+              placeholder="Google Sheets URL 또는 시트 ID"
+            />
+            <button
+              className={`apple-btn shrink-0 ${testing ? "apple-btn-secondary" : "apple-btn-primary"}`}
+              onClick={handleTest}
+              disabled={testing}
+            >
+              {testing ? "테스트 중..." : "테스트"}
+            </button>
+          </div>
+        </div>
+
+        {testResult && (
+          <div
+            className={`flex items-start gap-2 p-4 rounded-xl text-[13px] ${
+              testResult.success
+                ? "bg-[#34c759]/10 text-[#248a3d]"
+                : "bg-[#ff3b30]/10 text-[#d70015]"
             }`}
-            onClick={handleTest}
-            disabled={testing}
           >
-            {testing ? "테스트 중..." : "테스트 연결"}
-          </button>
-        </div>
-      </div>
+            <span>{testResult.success ? "✓" : "✗"}</span>
+            <span>{testResult.message}</span>
+          </div>
+        )}
 
-      {testResult && (
-        <div
-          className={`p-4 rounded-lg text-sm ${
-            testResult.success
-              ? "bg-green-50 border border-green-300 text-green-700"
-              : "bg-red-50 border border-red-300 text-red-700"
-          }`}
-        >
-          {testResult.message}
-        </div>
-      )}
-
-      <div className="p-4 bg-gray-50 rounded-xl border border-gray-200">
-        <h3 className="text-sm font-bold text-gray-700 mb-2">시트 형식 안내</h3>
-        <div className="text-xs text-gray-500 space-y-1">
-          <p>현재 지원하는 시트 형식 (열 순서):</p>
-          <p className="font-mono bg-white px-2 py-1 rounded border text-gray-600">
+        <div className="p-4 bg-[#f5f5f7] rounded-2xl">
+          <h4 className="text-[13px] font-semibold text-[#1d1d1f] mb-2">시트 형식 안내</h4>
+          <p className="font-mono text-[11px] bg-white px-3 py-2 rounded-lg border border-black/[0.06] text-[#6e6e73]">
             A:순번 | B:직무 | C:담당업무 | D:우대전공 | E:자격요건 | ... | J:인원 | K:프로세스 | L:일정
           </p>
-          <p className="mt-2 text-gray-400">채용공고 생성 시 수동으로 TSV 붙여넣기도 가능합니다.</p>
         </div>
       </div>
 
+      <hr className="apple-divider" />
+
       {/* AI 설정 */}
-      <div className="border-t border-gray-200 pt-6">
-        <h2 className="text-lg font-bold text-gray-800 mb-1">AI 설정 (선택)</h2>
-        <p className="text-sm text-gray-500 mb-4">
-          AI 자동 생성 기능을 사용하려면 OpenAI API 키가 필요합니다.
-        </p>
+      <div className="space-y-4">
+        <div>
+          <h3 className="text-[15px] font-semibold text-[#1d1d1f]">AI 설정</h3>
+          <p className="text-[13px] text-[#86868b] mt-0.5">
+            AI 자동 생성 기능을 사용하려면 OpenAI API 키가 필요합니다.
+          </p>
+        </div>
 
         <div>
-          <label className="text-sm font-semibold text-gray-700 mb-1 block">OpenAI API Key</label>
-          <p className="text-xs text-gray-400 mb-2">
-            <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+          <label className="text-[13px] font-medium text-[#6e6e73] mb-1.5 block">OpenAI API Key</label>
+          <p className="text-[12px] text-[#86868b] mb-2">
+            <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-[#0071e3] hover:underline">
               platform.openai.com
             </a>
-            에서 API 키를 발급받을 수 있습니다. &quot;sk-&quot;로 시작합니다.
+            에서 API 키를 발급받을 수 있습니다.
           </p>
           <input
             type="password"
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-blue-400 font-mono"
+            className="apple-input font-mono"
             value={profile.aiConfig?.apiKey || ""}
             onChange={(e) => updateField("aiConfig.apiKey", e.target.value)}
             placeholder="sk-..."
           />
           {profile.aiConfig?.apiKey && !profile.aiConfig.apiKey.startsWith("sk-") && (
-            <p className="text-xs text-red-500 mt-1">
-              올바른 OpenAI API 키는 &quot;sk-&quot;로 시작합니다.
+            <p className="text-[12px] text-[#ff3b30] mt-1.5 flex items-center gap-1">
+              <span>✗</span> 올바른 OpenAI API 키는 &quot;sk-&quot;로 시작합니다.
             </p>
           )}
           {profile.aiConfig?.apiKey && profile.aiConfig.apiKey.startsWith("sk-") && (
-            <p className="text-xs text-green-600 mt-1">
-              ✓ API 키가 설정되었습니다.
+            <p className="text-[12px] text-[#34c759] mt-1.5 flex items-center gap-1">
+              <span>✓</span> API 키가 설정되었습니다.
             </p>
           )}
         </div>

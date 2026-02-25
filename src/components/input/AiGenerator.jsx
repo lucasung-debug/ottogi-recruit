@@ -22,7 +22,7 @@ export default function AiGenerator({
   aiResult,
   onAiGenerate,
 }) {
-  const { profile, theme } = useCompanyProfile();
+  const { profile } = useCompanyProfile();
   const [loadingMsgIdx, setLoadingMsgIdx] = useState(0);
   const hasApiKey = !!profile.aiConfig?.apiKey;
   const hasResult = !!aiResult;
@@ -38,129 +38,58 @@ export default function AiGenerator({
     return () => clearInterval(interval);
   }, [aiLoading]);
 
-  const sectionStyle = {
-    marginBottom: 20,
-    padding: "20px 24px",
-    background: theme.white,
-    borderRadius: 12,
-    border: "1px solid #E8E8E8",
-    boxShadow: "0 1px 4px rgba(0,0,0,0.04)",
-  };
-  const labelStyle = {
-    fontSize: 15,
-    fontWeight: 700,
-    marginBottom: 14,
-    display: "flex",
-    alignItems: "center",
-    gap: 8,
-  };
-  const badgeStyle = {
-    display: "inline-flex",
-    alignItems: "center",
-    justifyContent: "center",
-    width: 26,
-    height: 26,
-    borderRadius: "50%",
-    fontSize: 13,
-    fontWeight: 800,
-    background: hasResult ? theme.success : theme.info,
-    color: "white",
-    flexShrink: 0,
-  };
-
-  const pillGroupStyle = {
-    display: "flex",
-    gap: 0,
-    marginBottom: 14,
-  };
-  const pillStyle = (active) => ({
-    flex: 1,
-    padding: "8px 0",
-    background: active ? theme.secondary : theme.white,
-    color: active ? "white" : theme.sub,
-    border: `1px solid ${theme.secondary}`,
-    fontSize: 13,
-    fontWeight: 600,
-    cursor: "pointer",
-  });
+  const canGenerate = !aiLoading && aiJobTitle.trim() && hasApiKey;
 
   return (
-    <div style={sectionStyle}>
-      <div style={labelStyle}>
-        <span style={badgeStyle}>1</span>
-        <span>AI 채용공고 자동 생성</span>
+    <div className="apple-card p-5">
+      <div className="flex items-center gap-2.5 mb-4">
+        <div
+          className={`w-6 h-6 rounded-full flex items-center justify-center text-[12px] font-bold text-white ${
+            hasResult ? "bg-[#34c759]" : "bg-[#0071e3]"
+          }`}
+        >
+          1
+        </div>
+        <h3 className="text-[15px] font-semibold text-[#1d1d1f]">AI 채용공고 자동 생성</h3>
         {hasResult && (
-          <span style={{ fontSize: 12, color: theme.success, fontWeight: 600 }}>
-            ✓ 생성 완료
-          </span>
+          <span className="text-[12px] font-semibold text-[#34c759]">✓ 생성 완료</span>
         )}
       </div>
 
       {/* API 키 미설정 안내 */}
       {!hasApiKey && (
-        <div
-          style={{
-            padding: "14px 18px",
-            background: theme.accentLight,
-            border: `1px solid ${theme.accent}`,
-            borderRadius: 10,
-            fontSize: 13,
-            marginBottom: 14,
-            lineHeight: 1.6,
-          }}
-        >
-          AI 자동 생성 기능을 사용하려면 OpenAI API 키가 필요합니다.{" "}
-          <Link
-            to="/setup"
-            style={{ color: theme.secondary, fontWeight: 700, textDecoration: "underline" }}
-          >
-            설정에서 API 키 입력하기
-          </Link>
+        <div className="flex items-start gap-2 p-4 bg-[#ff9500]/10 rounded-xl mb-4 text-[13px] leading-relaxed text-[#1d1d1f]">
+          <span className="shrink-0 mt-0.5">⚠</span>
+          <span>
+            AI 자동 생성 기능을 사용하려면 OpenAI API 키가 필요합니다.{" "}
+            <Link to="/setup" className="text-[#0071e3] font-semibold hover:underline">
+              설정에서 API 키 입력하기
+            </Link>
+          </span>
         </div>
       )}
 
       {/* 직무명 입력 */}
-      <div style={{ marginBottom: 14 }}>
-        <div style={{ fontSize: 12, color: theme.sub, marginBottom: 6 }}>
-          직무명 (필수)
-        </div>
+      <div className="mb-4">
+        <label className="text-[13px] font-medium text-[#6e6e73] mb-1.5 block">직무명 (필수)</label>
         <input
           type="text"
           value={aiJobTitle}
           onChange={(e) => setAiJobTitle(e.target.value)}
           placeholder="예: 마케팅 담당자, 소프트웨어 엔지니어"
-          style={{
-            width: "100%",
-            padding: "10px 14px",
-            border: "1px solid #DDD",
-            borderRadius: 8,
-            fontSize: 14,
-            fontFamily: "inherit",
-            boxSizing: "border-box",
-          }}
+          className="apple-input"
         />
       </div>
 
       {/* 고용형태 */}
-      <div style={{ marginBottom: 4 }}>
-        <div style={{ fontSize: 12, color: theme.sub, marginBottom: 6 }}>
-          고용형태
-        </div>
-        <div style={pillGroupStyle}>
-          {EMPLOYMENT_TYPES.map((type, i) => (
+      <div className="mb-4">
+        <label className="text-[13px] font-medium text-[#6e6e73] mb-1.5 block">고용형태</label>
+        <div className="segmented-control">
+          {EMPLOYMENT_TYPES.map((type) => (
             <button
               key={type}
               onClick={() => setAiEmploymentType(type)}
-              style={{
-                ...pillStyle(aiEmploymentType === type),
-                borderRadius:
-                  i === 0
-                    ? "8px 0 0 8px"
-                    : i === EMPLOYMENT_TYPES.length - 1
-                      ? "0 8px 8px 0"
-                      : 0,
-                borderLeft: i === 0 ? undefined : "none",
-              }}
+              className={`segmented-item ${aiEmploymentType === type ? "segmented-item-active" : ""}`}
             >
               {type}
             </button>
@@ -169,25 +98,14 @@ export default function AiGenerator({
       </div>
 
       {/* 경력구분 */}
-      <div style={{ marginBottom: 16 }}>
-        <div style={{ fontSize: 12, color: theme.sub, marginBottom: 6 }}>
-          경력구분
-        </div>
-        <div style={pillGroupStyle}>
-          {EXPERIENCE_LEVELS.map((level, i) => (
+      <div className="mb-5">
+        <label className="text-[13px] font-medium text-[#6e6e73] mb-1.5 block">경력구분</label>
+        <div className="segmented-control">
+          {EXPERIENCE_LEVELS.map((level) => (
             <button
               key={level}
               onClick={() => setAiExperienceLevel(level)}
-              style={{
-                ...pillStyle(aiExperienceLevel === level),
-                borderRadius:
-                  i === 0
-                    ? "8px 0 0 8px"
-                    : i === EXPERIENCE_LEVELS.length - 1
-                      ? "0 8px 8px 0"
-                      : 0,
-                borderLeft: i === 0 ? undefined : "none",
-              }}
+              className={`segmented-item ${aiExperienceLevel === level ? "segmented-item-active" : ""}`}
             >
               {level}
             </button>
@@ -198,44 +116,20 @@ export default function AiGenerator({
       {/* 생성 버튼 */}
       <button
         onClick={onAiGenerate}
-        disabled={aiLoading || !aiJobTitle.trim() || !hasApiKey}
-        style={{
-          width: "100%",
-          padding: "14px 0",
-          background:
-            aiLoading || !aiJobTitle.trim() || !hasApiKey ? "#CCC" : theme.primary,
-          color: "white",
-          border: "none",
-          borderRadius: 10,
-          fontSize: 15,
-          fontWeight: 700,
-          cursor: aiLoading || !aiJobTitle.trim() || !hasApiKey ? "not-allowed" : "pointer",
-          boxShadow:
-            !aiLoading && aiJobTitle.trim() && hasApiKey
-              ? `0 2px 8px ${theme.primary}40`
-              : "none",
-        }}
+        disabled={!canGenerate}
+        className={`w-full py-3.5 rounded-xl text-[15px] font-bold transition-all ${
+          canGenerate
+            ? "apple-btn-primary shadow-md hover:shadow-lg active:scale-[0.98]"
+            : "bg-[#d2d2d7] text-white cursor-not-allowed"
+        }`}
       >
         {aiLoading ? "생성 중..." : hasResult ? "다시 생성하기" : "AI로 생성하기"}
       </button>
 
       {/* 로딩 상태 메시지 */}
       {aiLoading && (
-        <div
-          style={{
-            marginTop: 12,
-            padding: "12px 16px",
-            background: theme.infoLight,
-            borderRadius: 8,
-            fontSize: 13,
-            color: theme.secondary,
-            textAlign: "center",
-          }}
-        >
-          <span style={{ display: "inline-block", animation: "pulse 1.5s infinite" }}>
-            {LOADING_MESSAGES[loadingMsgIdx]}...
-          </span>
-          <style>{`@keyframes pulse { 0%,100% { opacity: 1; } 50% { opacity: 0.5; } }`}</style>
+        <div className="mt-3 p-3 bg-[#0071e3]/[0.06] rounded-xl text-[13px] text-[#0071e3] text-center animate-pulse-soft">
+          {LOADING_MESSAGES[loadingMsgIdx]}...
         </div>
       )}
     </div>

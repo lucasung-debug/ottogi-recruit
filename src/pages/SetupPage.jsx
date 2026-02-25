@@ -77,31 +77,32 @@ export default function SetupPage() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 font-[system-ui]">
-      {/* 상단 바 */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-200 shadow-sm">
-        <div className="max-w-7xl mx-auto px-4 py-3 flex items-center justify-between gap-4">
-          <div className="flex items-center gap-4">
+    <div className="min-h-screen bg-[#f5f5f7]">
+      {/* Glass Header */}
+      <header className="sticky top-0 z-50 glass-header border-b border-black/[0.06]">
+        <div className="max-w-[1200px] mx-auto px-6 h-14 flex items-center justify-between">
+          <div className="flex items-center gap-5">
             <button
               onClick={() => navigate("/create")}
-              className="text-sm text-gray-500 hover:text-gray-700 cursor-pointer"
+              className="text-[13px] text-[#0071e3] font-medium hover:underline cursor-pointer"
             >
-              &larr; 채용공고 생성으로
+              &larr; 채용공고 생성
             </button>
-            <h1 className="text-lg font-bold text-gray-800">기업 초기 설정</h1>
+            <div className="w-px h-4 bg-black/10" />
+            <h1 className="text-[15px] font-semibold text-[#1d1d1f]">설정</h1>
           </div>
           <div className="flex items-center gap-2">
             <button
               onClick={handleExport}
-              className="px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="apple-btn apple-btn-ghost text-[12px] py-1.5 px-3"
             >
-              JSON 내보내기
+              내보내기
             </button>
             <button
               onClick={() => importRef.current?.click()}
-              className="px-3 py-1.5 text-xs font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer"
+              className="apple-btn apple-btn-ghost text-[12px] py-1.5 px-3"
             >
-              JSON 가져오기
+              가져오기
             </button>
             <input
               ref={importRef}
@@ -114,33 +115,40 @@ export default function SetupPage() {
         </div>
       </header>
 
-      {/* 본문 */}
-      <div className="max-w-7xl mx-auto px-4 py-6 flex gap-6">
-        {/* 사이드바 */}
-        <aside className="w-full lg:w-52 shrink-0">
+      {/* Body */}
+      <div className="max-w-[1200px] mx-auto px-6 py-8 flex gap-8">
+        {/* Sidebar */}
+        <aside className="w-full lg:w-48 shrink-0">
           <SetupSidebar currentStep={currentStep} onStepChange={setCurrentStep} />
         </aside>
 
-        {/* 스텝 콘텐츠 */}
+        {/* Content */}
         <main className="flex-1 min-w-0">
-          <div className="bg-white rounded-xl border border-gray-200 shadow-sm p-6">
+          <div className="apple-card p-8 animate-fade-in" key={currentStep}>
             <StepComponent />
 
-            {/* 하단 네비게이션 */}
-            <div className="flex items-center justify-between mt-8 pt-6 border-t border-gray-200">
+            {/* Bottom Navigation */}
+            <div className="flex items-center justify-between mt-10 pt-6 border-t border-black/[0.06]">
               <button
                 onClick={handlePrev}
                 disabled={currentStep === 1}
-                className="px-5 py-2.5 text-sm font-medium text-gray-600 border border-gray-300 rounded-lg hover:bg-gray-50 cursor-pointer disabled:opacity-40 disabled:cursor-default"
+                className="apple-btn apple-btn-secondary"
               >
                 &larr; 이전
               </button>
-              <span className="text-xs text-gray-400">
-                {currentStep} / {TOTAL_STEPS}
-              </span>
+              <div className="flex items-center gap-2">
+                {Array.from({ length: TOTAL_STEPS }, (_, i) => (
+                  <div
+                    key={i}
+                    className={`w-1.5 h-1.5 rounded-full transition-all ${
+                      i + 1 === currentStep ? "bg-[#0071e3] w-4" : "bg-black/15"
+                    }`}
+                  />
+                ))}
+              </div>
               <button
                 onClick={handleNext}
-                className="px-5 py-2.5 text-sm font-bold text-white bg-blue-600 rounded-lg hover:bg-blue-700 cursor-pointer"
+                className="apple-btn apple-btn-primary"
               >
                 {currentStep < TOTAL_STEPS ? "다음 →" : "설정 완료 →"}
               </button>
@@ -148,7 +156,7 @@ export default function SetupPage() {
           </div>
         </main>
 
-        {/* 미니 프리뷰 */}
+        {/* Mini Preview */}
         <aside className="shrink-0">
           <MiniPosterPreview />
         </aside>

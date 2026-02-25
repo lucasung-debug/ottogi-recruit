@@ -8,6 +8,7 @@ import {
   matchJobs,
 } from "./utils/sheets";
 import { calcFinalHireMonth, processLogo } from "./utils/helpers";
+import { generateJobPosting } from "./services/ai";
 import { useCompanyProfile } from "./context/CompanyProfileContext";
 import InputPage from "./pages/InputPage";
 import PreviewPage from "./pages/PreviewPage";
@@ -17,26 +18,39 @@ function AppContent() {
   const { profile } = useCompanyProfile();
   const navigate = useNavigate();
 
-  // ===== 상태 =====
+  // ===== 공통 상태 =====
   const [title, setTitle] = useState(profile.defaultTitle);
   const [year, setYear] = useState(new Date().getFullYear());
-  const [sheetUrl, setSheetUrl] = useState("");
-  const [jobInput, setJobInput] = useState("");
   const [logoUrl, setLogoUrl] = useState("");
-  const [allGroups, setAllGroups] = useState([]);
   const [matchedJobs, setMatchedJobs] = useState([]);
   const [processSteps, setProcessSteps] = useState([]);
   const [schedule, setSchedule] = useState("");
   const [finalHireMonth, setFinalHireMonth] = useState("");
   const [error, setError] = useState("");
-  const [loading, setLoading] = useState(false);
   const [downloading, setDownloading] = useState(false);
+  const posterRef = useRef(null);
+
+  // ===== 모드 =====
+  const [sourceMode, setSourceMode] = useState("sheets"); // "sheets" | "ai"
+
+  // ===== Sheets 모드 상태 =====
+  const [sheetUrl, setSheetUrl] = useState("");
+  const [jobInput, setJobInput] = useState("");
+  const [allGroups, setAllGroups] = useState([]);
+  const [loading, setLoading] = useState(false);
   const [sheetLoaded, setSheetLoaded] = useState(false);
   const [availableJobs, setAvailableJobs] = useState([]);
   const [dataMode, setDataMode] = useState(""); // auto | manual
   const [manualTSV, setManualTSV] = useState("");
   const [showManual, setShowManual] = useState(false);
-  const posterRef = useRef(null);
+
+  // ===== AI 모드 상태 =====
+  const [aiJobTitle, setAiJobTitle] = useState("");
+  const [aiEmploymentType, setAiEmploymentType] = useState("정규직");
+  const [aiExperienceLevel, setAiExperienceLevel] = useState("신입/경력");
+  const [aiLoading, setAiLoading] = useState(false);
+  const [aiError, setAiError] = useState("");
+  const [aiResult, setAiResult] = useState(null);
 
   // ===== 시트 자동 불러오기 =====
   const fetchSheet = useCallback(async () => {
@@ -85,8 +99,68 @@ function AppContent() {
     reader.readAsDataURL(f);
   };
 
-  // ===== 공고 생성 =====
+  // ===== AI 공고 생성 =====
+  const handleAiGenerate = useCallback(async () => {
+    if (!aiJobTitle.trim()) {
+      setAiError("직무명을 입력해주세요.");
+      return;
+    }
+    if (!profile.aiConfig?.apiKey) {
+      setAiError("API_KEY_MISSING");
+      return;
+    }
+    setAiLoading(true);
+    setAiError("");
+    try {
+      const companyContext = {
+        companyName: profile.companyName,
+        talentValues: profile.talentProfile?.values || [],
+        talentKeywords: profile.talentProfile?.keywords || [],
+      };
+      const result = await generateJobPosting({
+        jobTitle: aiJobTitle,
+        employmentType: aiEmploymentType,
+        experienceLevel: aiExperienceLevel,
+        companyContext,
+        apiKey: profile.aiConfig.apiKey,
+      });
+      setAiResult(result);
+      if (result.suggestedTitle) {
+        setTitle(result.suggestedTitle);
+      }
+    } catch (e) {
+      if (e.message === "API_KEY_MISSING") {
+        setAiError("설정에서 OpenAI API 키를 입력해주세요.");
+      } else {
+        setAiError(e.message);
+      }
+    } finally {
+      setAiLoading(false);
+    }
+  }, [aiJobTitle, aiEmploymentType, aiExperienceLevel, profile]);
+
+  // ===== 공고 생성 (듀얼 모드) =====
   const generate = async () => {
+    setError("");
+
+    if (sourceMode === "ai") {
+      // AI 모드
+      if (!aiResult?.jobs?.length) {
+        setError("먼저 AI로 채용공고를 생성해주세요.");
+        return;
+      }
+      const jobs = aiResult.jobs;
+      setMatchedJobs(jobs);
+      const withProc = jobs.find((j) => j.process?.length > 0) || jobs[0];
+      const withSched = jobs.find((j) => j.schedule) || jobs[0];
+      setProcessSteps(withProc.process || []);
+      setSchedule(withSched.schedule || "");
+      setFinalHireMonth(calcFinalHireMonth(withSched.schedule || "", year));
+      navigate("/preview");
+      return;
+    }
+
+    // Sheets 모드
     if (!sheetLoaded) {
       setError("먼저 시트 데이터를 불러와 주세요.");
       return;
@@ -112,7 +186,6 @@ function AppContent() {
     setProcessSteps(withProc.process);
     setSchedule(withSched.schedule);
     setFinalHireMonth(calcFinalHireMonth(withSched.schedule, year));
-    setError("");
     navigate("/preview");
   };
 
@@ -144,15 +217,23 @@ function AppContent() {
         path="/create"
         element={
           <InputPage
+            // 공통
             title={title}
             setTitle={setTitle}
             year={year}
             setYear={setYear}
+            logoUrl={logoUrl}
+            error={error}
+            onLogoChange={handleLogo}
+            onGenerate={generate}
+            // 모드
+            sourceMode={sourceMode}
+            setSourceMode={setSourceMode}
+            // Sheets 모드
             sheetUrl={sheetUrl}
             setSheetUrl={setSheetUrl}
             jobInput={jobInput}
             setJobInput={setJobInput}
-            logoUrl={logoUrl}
             sheetLoaded={sheetLoaded}
             dataMode={dataMode}
             showManual={showManual}
@@ -162,11 +243,20 @@ function AppContent() {
             availableJobs={availableJobs}
             allGroups={allGroups}
             loading={loading}
-            error={error}
             onFetchSheet={fetchSheet}
             onManualPaste={handleManualPaste}
-            onLogoChange={handleLogo}
-            onGenerate={generate}
+            // AI 모드
+            aiJobTitle={aiJobTitle}
+            setAiJobTitle={setAiJobTitle}
+            aiEmploymentType={aiEmploymentType}
+            setAiEmploymentType={setAiEmploymentType}
+            aiExperienceLevel={aiExperienceLevel}
+            setAiExperienceLevel={setAiExperienceLevel}
+            aiLoading={aiLoading}
+            aiError={aiError}
+            aiResult={aiResult}
+            onAiGenerate={handleAiGenerate}
+            onAiResultUpdate={setAiResult}
           />
         }
       />

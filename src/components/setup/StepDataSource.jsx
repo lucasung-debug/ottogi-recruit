@@ -82,6 +82,41 @@ export default function StepDataSource() {
           <p className="mt-2 text-gray-400">채용공고 생성 시 수동으로 TSV 붙여넣기도 가능합니다.</p>
         </div>
       </div>
+
+      {/* AI 설정 */}
+      <div className="border-t border-gray-200 pt-6">
+        <h2 className="text-lg font-bold text-gray-800 mb-1">AI 설정 (선택)</h2>
+        <p className="text-sm text-gray-500 mb-4">
+          AI 자동 생성 기능을 사용하려면 OpenAI API 키가 필요합니다.
+        </p>
+
+        <div>
+          <label className="text-sm font-semibold text-gray-700 mb-1 block">OpenAI API Key</label>
+          <p className="text-xs text-gray-400 mb-2">
+            <a href="https://platform.openai.com/api-keys" target="_blank" rel="noopener noreferrer" className="text-blue-500 underline">
+              platform.openai.com
+            </a>
+            에서 API 키를 발급받을 수 있습니다. &quot;sk-&quot;로 시작합니다.
+          </p>
+          <input
+            type="password"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-lg outline-none focus:border-blue-400 font-mono"
+            value={profile.aiConfig?.apiKey || ""}
+            onChange={(e) => updateField("aiConfig.apiKey", e.target.value)}
+            placeholder="sk-..."
+          />
+          {profile.aiConfig?.apiKey && !profile.aiConfig.apiKey.startsWith("sk-") && (
+            <p className="text-xs text-red-500 mt-1">
+              올바른 OpenAI API 키는 &quot;sk-&quot;로 시작합니다.
+            </p>
+          )}
+          {profile.aiConfig?.apiKey && profile.aiConfig.apiKey.startsWith("sk-") && (
+            <p className="text-xs text-green-600 mt-1">
+              ✓ API 키가 설정되었습니다.
+            </p>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

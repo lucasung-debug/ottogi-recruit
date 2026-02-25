@@ -62,4 +62,9 @@ export const DEFAULT_COMPANY_PROFILE = {
     values: [],
     keywords: [],
   },
+
+  aiConfig: {
+    apiKey: "",
+    model: "gpt-4o",
+  },
 };

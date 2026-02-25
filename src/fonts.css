@@ -1,3 +1,5 @@
+@import "tailwindcss";
+
 @font-face {
   font-family: 'OtokiSans3N';
   src: url('/ottogi-recruit/fonts/OtokiSans3N-ExtraBold.ttf') format('truetype');

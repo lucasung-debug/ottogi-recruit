@@ -6,6 +6,7 @@
  */
 
 export const DEFAULT_COMPANY_PROFILE = {
+  isConfigured: false,
   companyName: "오뚜기라면주식회사",
 
   brandColors: {

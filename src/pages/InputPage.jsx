@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import { useCompanyProfile } from "../context/CompanyProfileContext";
 import SheetLoader from "../components/input/SheetLoader";
 import TitleEditor from "../components/input/TitleEditor";
@@ -62,6 +63,19 @@ export default function InputPage({
         <div style={{ fontSize: 12, color: theme.sub, marginTop: 4 }}>
           Google Sheets 데이터 기반 채용공고 포스터 자동 생성
         </div>
+        <Link
+          to="/setup"
+          style={{
+            display: "inline-block",
+            marginTop: 8,
+            fontSize: 12,
+            color: theme.secondary,
+            fontWeight: 600,
+            textDecoration: "underline",
+          }}
+        >
+          기업 설정 변경
+        </Link>
       </div>
 
       <SheetLoader

@@ -1,0 +1,18 @@
+# Dependencies
+node_modules/
+
+# Build output
+dist/
+
+# Git internals
+.git/
+
+# Secrets
+.env
+*.env
+
+# Lock files
+package-lock.json
+
+# Logs
+*.log
